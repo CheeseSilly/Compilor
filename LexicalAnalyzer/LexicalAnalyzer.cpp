@@ -59,8 +59,11 @@ void scaner()
 			token[m++] = ch;
 			ch = prog[p++];
 		}
+
 		//end the token array
 		token[m++] = '\0';
+		strcpy(arr_value, token);
+		arr_num=m-1;
 		p--;
 		syn = 10;
 
@@ -74,12 +77,33 @@ void scaner()
 		for (n = 0; n < 4;n++)
 		{
 			if (token==rwtab2[n])
-			{
+			{	
+				if(n==1)
+				{
+					arr_flag=1;
+				}
 				syn = n + 31;
 				break;
 			}
 		}
 	}
+	//check array
+	else if ((ch == '('&&arr_flag==1)) {
+		strcpy(token, arr_value);
+        m = arr_num;
+        token[m++] = ch;
+        ch = prog[p++];
+        while (ch != ')' && ch != '\0') {
+            token[m++] = ch;
+            ch = prog[p++];
+        }
+        token[m++] = ch; // add')'
+        token[m] = '\0';
+        syn = 30;
+		arr_flag = 0;
+		arr_num = 0;
+    }
+
 	else if ((ch >= '0'&&ch <= '9'))  //store the number with the sum
 	{
 		sum = 0;
@@ -249,6 +273,9 @@ int main()
 		case -2: 
 			line = line++; 
 			break;
+		case 30:
+            outfile << "Array definition:("<< syn <<"," << token<<")" << std::endl;
+            break;
 		//output the reserved word
 		default: 
 			outfile << "(" << syn << "," << token << ")" << std::endl;

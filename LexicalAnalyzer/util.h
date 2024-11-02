@@ -11,6 +11,7 @@
 #define RESULT "result.txt"
 
 #include <iostream>
+#include <string>
 #include <fstream>
 #include <cstring>
 #include <windows.h>
@@ -22,6 +23,9 @@
  * @param token: The token array used to store keywords, variables, operators, and delimiters.
  * @param prog: The prog array stores the source code string length.
  * @param ch: The current character being processed.
+ * @param arr_flag: The arr variable is used to track the array.
+ * @param arr_value: The arr_value variable is used to store the array's name.
+ * @param arr_num: The arr_num variable is used to store the array's index.
  * @param syn: The syn variable stores the number corresponding to each word or symbol.
  * @param p: The p variable is used to track the index of the prog array.
  * @param m: The m variable is used to track the index of the token array.
@@ -31,9 +35,12 @@
  * @param rwtab1: The rwtab1 array stores the reserved words and delimiters.
  * @param rwtab2: The rwtab2 array stores the reserved words and delimiters.
 */
-char token[10];
+char token[20];
 char *prog;
 char ch;
+int arr_flag{0};
+char arr_value[20];
+int arr_num{0};
 int syn, p, m = 0, n, line, sum = 0;
 std::string rwtab1[10] = { "begin","if","then","else","while","do","end" };
 std::string rwtab2[4] = { "const","var","procedure","call" };
