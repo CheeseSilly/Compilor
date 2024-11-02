@@ -25,15 +25,31 @@ void scaner()
 	
     //initialize the token array
 	for (n = 0; n<10; n++) 
-		token[n] = NULL;
+		token[n] = '\0';
 	ch = prog[p++];
+
 	//skip the space
-	while (ch == ' ')
-	{
-		ch = prog[p];
-		p++;
-	}
-	//
+	// while (ch == ' ')
+	// {
+	// 	ch = prog[p];
+	// 	p++;
+	// }
+
+	//skip the comment and space
+    while (ch == ' ' || ch == '{')
+    {
+        if (ch == '{') {
+            //skip the comment
+            while (ch != '}' && ch != '\0') {
+                ch = prog[p++];
+            }
+            ch = prog[p++];
+        } else {
+            ch = prog[p++];
+        }
+    }
+
+	//scan the token
 	if ((ch >= 'a'&&ch <= 'z') || (ch >= 'A'&&ch <= 'Z'))  
 	{
 		//Initialize m to 0,which is used to track the index of the token array
@@ -49,7 +65,7 @@ void scaner()
 		syn = 10;
 
         //check if the token is a reserved word,all reserved words are lowercase
-		for (n = 0; n<6; n++)  
+		for (n = 0; n<7; n++)  
 			if (token==rwtab1[n])
 			{
 				syn = n + 1;
@@ -221,15 +237,19 @@ int main()
 		scaner();
 		switch (syn)
 		{
+		//output number
 		case 11: 
 			outfile << "(" << syn << "," << sum << ")" << std::endl;
 			break;
+		//output error
 		case -1: 
 			outfile << "Error in line" << line << "!" << std::endl;
 			break;
+		//handle the line change
 		case -2: 
 			line = line++; 
 			break;
+		//output the reserved word
 		default: 
 			outfile << "(" << syn << "," << token << ")" << std::endl;
 			break;

@@ -6,7 +6,7 @@
  */
 # pragma once
 //test code file
-#define CODE "code.txt"
+#define CODE "code.txt" //code、code1、code2
 //result file
 #define RESULT "result.txt"
 
@@ -35,7 +35,7 @@ char token[10];
 char *prog;
 char ch;
 int syn, p, m = 0, n, line, sum = 0;
-std::string rwtab1[10] = { "begin","if","then","while","do","end" };
+std::string rwtab1[10] = { "begin","if","then","else","while","do","end" };
 std::string rwtab2[4] = { "const","var","procedure","call" };
 
 /**
