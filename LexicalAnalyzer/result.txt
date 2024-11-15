@@ -5,7 +5,7 @@
 (26,;)
 (32,var)
 (10,head)
-Array definition:(30,head(1:10))
+Array definition:(30,head(c(1)))
 (29,,)
 (10,foot)
 (29,,)

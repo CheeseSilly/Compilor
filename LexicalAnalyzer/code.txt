@@ -1,5 +1,5 @@
 const z = 0;
-var head(1:10), foot, cock, rabbit, n;
+var head(c(1)), foot, cock, rabbit, n;
 begin
     n := z;
     read(head, foot)

@@ -89,20 +89,36 @@ void scaner()
 	}
 	//check array
 	else if ((ch == '('&&arr_flag==1)) {
+		//check whether it is a number index or else
+		int i=0;
 		strcpy(token, arr_value);
         m = arr_num;
         token[m++] = ch;
         ch = prog[p++];
-        while (ch != ')' && ch != '\0') {
+		if((ch >= '0'&&ch <= '9')){
+			while (ch != ')' && ch != '\0') {
             token[m++] = ch;
             ch = prog[p++];
         }
+		i=0;
+		}else{
+			while (ch != ')' && ch != '\0') {
+            token[m++] = ch;
+            ch = prog[p++];
+		}
+		i=1;
+		}
         token[m++] = ch; // add')'
+		if(i==1){
+			token[m++]=')';
+			p++;
+		}
         token[m] = '\0';
         syn = 30;
 		arr_flag = 0;
 		arr_num = 0;
     }
+	
 
 	else if ((ch >= '0'&&ch <= '9'))  //store the number with the sum
 	{
