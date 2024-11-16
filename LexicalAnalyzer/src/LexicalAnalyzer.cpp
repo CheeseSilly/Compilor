@@ -17,7 +17,7 @@
  * @author CheeseSilly
  * @date 2024-10-16
  */
-#include"util.h"
+#include "../include/util.h"
 
 void array_check(char ch){
 	if (ch =='(') {
