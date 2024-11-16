@@ -19,6 +19,44 @@
  */
 #include"util.h"
 
+void array_check(char ch){
+	if (ch =='(') {
+		//check whether it is a number index or else
+		int i=0;
+		strcpy(token, arr_value);
+        m = arr_num;
+        token[m++] = ch;
+        ch = prog[p++];
+		if((ch >= '0'&&ch <= '9')){
+			while (ch != ')' && ch != '\0') {
+            token[m++] = ch;
+            ch = prog[p++];
+			if(ch==' '){
+				ch=prog[p++];
+			}
+        }
+		i=0;
+		}else{
+			while (ch != ')' && ch != '\0') {
+            token[m++] = ch;
+            ch = prog[p++];
+			if(ch==' '){
+				ch=prog[p++];
+			}
+		}
+		i=1;
+		}
+        token[m++] = ch; // add')' for '}' in string's case
+		if(i==1){
+			token[m++]=')';
+			p++;
+		}
+        token[m] = '\0';
+        syn = 30;
+		arr_flag = 0;
+		arr_num = 0;
+    }
+}
 
 void scaner()
 {
@@ -59,13 +97,18 @@ void scaner()
 			token[m++] = ch;
 			ch = prog[p++];
 		}
-
+		auto tp_ch=ch;
 		//end the token array
-		token[m++] = '\0';
+		if(ch!='('){
+			token[m++] = '\0';
+			p--;
+			syn=10;
+		}else{
 		strcpy(arr_value, token);
-		arr_num=m-1;
-		p--;
-		syn = 10;
+		arr_num=m;
+		array_check(tp_ch);
+		}
+		
 
         //check if the token is a reserved word,all reserved words are lowercase
 		for (n = 0; n<7; n++)  
@@ -87,37 +130,6 @@ void scaner()
 			}
 		}
 	}
-	//check array
-	else if ((ch == '('&&arr_flag==1)) {
-		//check whether it is a number index or else
-		int i=0;
-		strcpy(token, arr_value);
-        m = arr_num;
-        token[m++] = ch;
-        ch = prog[p++];
-		if((ch >= '0'&&ch <= '9')){
-			while (ch != ')' && ch != '\0') {
-            token[m++] = ch;
-            ch = prog[p++];
-        }
-		i=0;
-		}else{
-			while (ch != ')' && ch != '\0') {
-            token[m++] = ch;
-            ch = prog[p++];
-		}
-		i=1;
-		}
-        token[m++] = ch; // add')'
-		if(i==1){
-			token[m++]=')';
-			p++;
-		}
-        token[m] = '\0';
-        syn = 30;
-		arr_flag = 0;
-		arr_num = 0;
-    }
 	
 
 	else if ((ch >= '0'&&ch <= '9'))  //store the number with the sum

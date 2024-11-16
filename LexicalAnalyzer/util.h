@@ -53,3 +53,6 @@ void scaner();
 
 //read the code from the file
 void read();
+
+//array check and output
+void array_check(char ch);
