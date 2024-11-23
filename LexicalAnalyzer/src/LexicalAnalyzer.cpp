@@ -14,11 +14,12 @@
  *
  * The results of the lexical analysis are written to an output file specified by the `RESULT` macro.
  * 
+ * No need and no ability to deal with mistakes! 
+ *
  * @author CheeseSilly
  * @date 2024-10-16
  */
 #include "../include/util.h"
-
 void array_check(char ch){
 	if (ch =='(') {
 		//check whether it is a number index or else
@@ -27,6 +28,7 @@ void array_check(char ch){
         m = arr_num;
         token[m++] = ch;
         ch = prog[p++];
+		//eg. a[1:2]...
 		if((ch >= '0'&&ch <= '9')){
 			while (ch != ')' && ch != '\0') {
             token[m++] = ch;
@@ -36,7 +38,7 @@ void array_check(char ch){
 			}
         }
 		i=0;
-		}else{
+		}else{ //eg. a[b[1:2]]...
 			while (ch != ')' && ch != '\0') {
             token[m++] = ch;
             ch = prog[p++];
@@ -46,7 +48,8 @@ void array_check(char ch){
 		}
 		i=1;
 		}
-        token[m++] = ch; // add')' for '}' in string's case
+        token[m++] = ch; 
+		// add')' for '}' in string's case
 		if(i==1){
 			token[m++]=')';
 			p++;
@@ -79,6 +82,9 @@ void scaner()
         if (ch == '{') {
             //skip the comment
             while (ch != '}' && ch != '\0') {
+				if(prog[p]=='}'&&((prog[p+1]>='a'&&prog[p+1]<='z')||(prog[p+1]>='A'&&prog[p+1]<='Z'))){
+					ch=prog[p++];
+				}
                 ch = prog[p++];
             }
             ch = prog[p++];
@@ -106,7 +112,10 @@ void scaner()
 		}else{
 		strcpy(arr_value, token);
 		arr_num=m;
+		if(arr_flag){
 		array_check(tp_ch);
+		arr_flag=0;
+		}
 		}
 		
 
