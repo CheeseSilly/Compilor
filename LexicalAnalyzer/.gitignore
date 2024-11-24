@@ -1,6 +1,0 @@
-.vscode/
-*.o
-*.out
-*.exe
-*.zip
-build/
