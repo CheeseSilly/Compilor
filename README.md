@@ -5,5 +5,4 @@ EBNF.doc
 ./test/
 
 ## output files
-SynOutput.txt
-helperOutput.txt
+./output/
