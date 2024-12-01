@@ -192,19 +192,19 @@ ProceHead   : PROCEDURE IDENTIFIER SEMI {
                 }
                 
             ; */
-States      : Statements {
+/* States      : Statements {
                 fprintf(fi,"States -> Statement\n"); 
                 fprintf(fh,"States -> Statement\n");
                  }
             | States Statements {
                 fprintf(fi,"States -> States Statement\n"); 
                 fprintf(fh,"States -> States Statement\n");
-                 }
-Statements  : AssignStm SEMI {
-                fprintf(fi,"Statements -> AssignStm SEMI\n");
-                fprintf(fh,"Statements -> AssignStm SEMI\n");
+                 } */
+Statements  : AssignStm  {
+                fprintf(fi,"Statements -> AssignStm \n");
+                fprintf(fh,"Statements -> AssignStm \n");
                   }
-            | ComplexStm { 
+            | ComplexStm  { 
                 fprintf(fi,"Statements -> ComplexStm\n");
                 fprintf(fh,"Statements -> ComplexStm\n");
                 }
@@ -212,21 +212,21 @@ Statements  : AssignStm SEMI {
                 fprintf(fi,"Statements -> CondiStm\n"); 
                 fprintf(fh,"Statements -> CondiStm\n");
                  }
-            | WhileStm SEMI{
-                fprintf(fi,"Statements -> WhileStm SEMI\n");
-                fprintf(fh,"Statements -> WhileStm SEMI\n");
+            | WhileStm {
+                fprintf(fi,"Statements -> WhileStm \n");
+                fprintf(fh,"Statements -> WhileStm \n");
                 }
-            | CallS SEMI{
-                fprintf(fi,"Statements -> CallS SEMI\n");
-                fprintf(fh,"Statements -> CallS SEMI\n");
+            | CallS {
+                fprintf(fi,"Statements -> CallS \n");
+                fprintf(fh,"Statements -> CallS \n");
                   }
-            | ReadS SEMI{
-                fprintf(fi,"Statements -> ReadS SEMI\n"); 
-                fprintf(fh,"Statements -> ReadS SEMI\n");
+            | ReadS {
+                fprintf(fi,"Statements -> ReadS \n"); 
+                fprintf(fh,"Statements -> ReadS \n");
                  }
-            | WriteS SEMI{
-                fprintf(fi,"Statements -> WriteS SEMI\n");
-                fprintf(fh,"Statements -> WriteS SEMI\n");
+            | WriteS {
+                fprintf(fi,"Statements -> WriteS \n");
+                fprintf(fh,"Statements -> WriteS \n");
                   }
             ;
 
@@ -251,9 +251,19 @@ AssignStm    : Identifier ASSIGN Expr {
             }
             ;
 
-ComplexStm    : _BEGIN_ States END {
-                fprintf(fi,"ComplexStm -> _BEGIN_ States END\n"); 
-                fprintf(fh,"ComplexStm -> _BEGIN_ States END\n"); 
+ComplexStm    : _BEGIN_ ComStates END  {
+                fprintf(fi,"ComplexStm -> _BEGIN_ ComStates END\n"); 
+                fprintf(fh,"ComplexStm -> _BEGIN_ ComStates END\n"); 
+                }
+            ;
+
+ComStates  : Statements SEMI  {
+                fprintf(fi,"ComStates -> Statement SEMI\n");
+                fprintf(fh,"ComStates -> Statement SEMI\n");
+                 }
+            | ComStates  Statements SEMI  {
+                fprintf(fi,"ComStates ->ComStates  Statement SEMI\n");
+                fprintf(fh,"ComStates ->ComStates  Statement SEMI\n");
                 }
             ;
 

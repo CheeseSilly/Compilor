@@ -58,9 +58,203 @@ IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
 VarObj -> var IdentiDef SEMI
 VarDec -> VarObj
+procedure
+PROCEDURE -> procedure
+multiply
+IDENTIFIER -> multiply
+;
+SEMI -> ;
+ProceHead -> procedure IDENTIFIER SEMI
+var
+VAR -> var
+a
+IDENTIFIER -> a
+,
+COMMA -> ,
+IdentiObject -> IDENTIFIER
+IdentiDef -> IdentiObject
+b
+IDENTIFIER -> b
+;
+SEMI -> ;
+IdentiObject -> IDENTIFIER
+IdentiDef -> IdentiDef , IdentiObject
+VarObj -> var IdentiDef SEMI
+VarDec -> VarObj
 begin
 _BEGIN_ -> begin
-DeclarePart -> ConstDec VarDec
+DeclarePart -> VarDec
+a
+IDENTIFIER -> a
+:=
+ASSIGN -> :=
+Identifier -> IDENTIFIER
+x
+IDENTIFIER -> x
+;
+SEMI -> ;
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates -> Statement SEMI
+b
+IDENTIFIER -> b
+:=
+ASSIGN -> :=
+Identifier -> IDENTIFIER
+y
+IDENTIFIER -> y
+;
+SEMI -> ;
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+z
+IDENTIFIER -> z
+:=
+ASSIGN -> :=
+Identifier -> IDENTIFIER
+0
+INTEGER_VAL -> 0
+Factor -> INTEGER_VAL
+Term -> Factor
+;
+SEMI -> ;
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+while
+WHILE -> while
+b
+IDENTIFIER -> b
+>
+GREATER -> >
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+CMP -> GREATER
+0
+INTEGER_VAL -> 0
+Factor -> INTEGER_VAL
+Term -> Factor
+do
+DO -> do
+Expr -> Term
+Condition -> Expr CMP Expr
+begin
+_BEGIN_ -> begin
+if
+IF -> if
+odd
+ODD -> odd
+b
+IDENTIFIER -> b
+then
+THEN -> then
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+Condition -> ODD Expr
+z
+IDENTIFIER -> z
+:=
+ASSIGN -> :=
+Identifier -> IDENTIFIER
+z
+IDENTIFIER -> z
++
+PLUS -> +
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+a
+IDENTIFIER -> a
+;
+SEMI -> ;
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Expr PLUS Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+CondiStm -> IF Condition THEN Statement
+Statements -> CondiStm
+ComStates -> Statement SEMI
+a
+IDENTIFIER -> a
+:=
+ASSIGN -> :=
+Identifier -> IDENTIFIER
+2
+INTEGER_VAL -> 2
+Factor -> INTEGER_VAL
+Term -> Factor
+*
+TIMES -> *
+a
+IDENTIFIER -> a
+;
+SEMI -> ;
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Term TIMES Factor
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+b
+IDENTIFIER -> b
+:=
+ASSIGN -> :=
+Identifier -> IDENTIFIER
+b
+IDENTIFIER -> b
+/
+DIVIDE -> /
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+2
+INTEGER_VAL -> 2
+Factor -> INTEGER_VAL
+Term -> Term DIVIDE Factor
+;
+SEMI -> ;
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+end
+END -> end
+ComplexStm -> _BEGIN_ ComStates END
+Statements -> ComplexStm
+WhileStm -> WHILE Condition DO Statement
+Statements -> WhileStm 
+;
+SEMI -> ;
+ComStates ->ComStates  Statement SEMI
+end
+END -> end
+ComplexStm -> _BEGIN_ ComStates END
+Statements -> ComplexStm
+SubPro -> DeclarePart Statement
+;
+SEMI -> ;
+ProDec -> ProceHead SubPro SEMI
+begin
+_BEGIN_ -> begin
+DeclarePart -> ConstDec VarDec ProDec
 n
 IDENTIFIER -> n
 :=
@@ -75,8 +269,8 @@ Factor -> Identifier
 Term -> Factor
 Expr -> Term
 AssignStm -> Identifier ASSIGN Expr
-Statements -> AssignStm SEMI
-States -> Statement
+Statements -> AssignStm 
+ComStates -> Statement SEMI
 read
 READ -> read
 (
@@ -107,10 +301,10 @@ Identifier -> IDENTIFIER
 RconObj -> Identifier
 Rcontent -> Rcontent COMMA RconObj
 ReadS -> read SL_PAREN Rcontent SR_PAREN
+Statements -> ReadS 
 ;
 SEMI -> ;
-Statements -> ReadS SEMI
-States -> States Statement
+ComStates ->ComStates  Statement SEMI
 cock
 IDENTIFIER -> cock
 :=
@@ -124,8 +318,8 @@ Term -> Factor
 SEMI -> ;
 Expr -> Term
 AssignStm -> Identifier ASSIGN Expr
-Statements -> AssignStm SEMI
-States -> States Statement
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
 while
 WHILE -> while
 cock
@@ -170,8 +364,8 @@ Factor -> Identifier
 Term -> Factor
 Expr -> Expr MINUS Term
 AssignStm -> Identifier ASSIGN Expr
-Statements -> AssignStm SEMI
-States -> Statement
+Statements -> AssignStm 
+ComStates -> Statement SEMI
 if
 IF -> if
 cock
@@ -239,10 +433,10 @@ Expr -> Term
 WconObj -> Expr
 Wcontent -> Wcontent COMMA WconObj
 WriteS -> write SL_PAREN Wcontent SR_PAREN
+Statements -> WriteS 
 ;
 SEMI -> ;
-Statements -> WriteS SEMI
-States -> Statement
+ComStates -> Statement SEMI
 n
 IDENTIFIER -> n
 :=
@@ -264,17 +458,19 @@ Term -> Factor
 SEMI -> ;
 Expr -> Expr PLUS Term
 AssignStm -> Identifier ASSIGN Expr
-Statements -> AssignStm SEMI
-States -> States Statement
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
 end
 END -> end
-ComplexStm -> _BEGIN_ States END
+ComplexStm -> _BEGIN_ ComStates END
 Statements -> ComplexStm
-cock
-IDENTIFIER -> cock
+;
+SEMI -> ;
 CondiStm -> IF Condition THEN Statement
 Statements -> CondiStm
-States -> States Statement
+ComStates ->ComStates  Statement SEMI
+cock
+IDENTIFIER -> cock
 :=
 ASSIGN -> :=
 Identifier -> IDENTIFIER
@@ -294,17 +490,17 @@ Term -> Factor
 SEMI -> ;
 Expr -> Expr PLUS Term
 AssignStm -> Identifier ASSIGN Expr
-Statements -> AssignStm SEMI
-States -> States Statement
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
 end
 END -> end
-ComplexStm -> _BEGIN_ States END
+ComplexStm -> _BEGIN_ ComStates END
 Statements -> ComplexStm
 WhileStm -> WHILE Condition DO Statement
+Statements -> WhileStm 
 ;
 SEMI -> ;
-Statements -> WhileStm SEMI
-States -> States Statement
+ComStates ->ComStates  Statement SEMI
 if
 IF -> if
 n
@@ -347,9 +543,7 @@ Expr -> Term
 WconObj -> Expr
 Wcontent -> Wcontent COMMA WconObj
 WriteS -> write SL_PAREN Wcontent SR_PAREN
-;
-SEMI -> ;
-Statements -> WriteS SEMI
+Statements -> WriteS 
 else
 ELSE -> else
 write
@@ -375,15 +569,15 @@ Expr -> Term
 WconObj -> Expr
 Wcontent -> Wcontent COMMA WconObj
 WriteS -> write SL_PAREN Wcontent SR_PAREN
-;
-SEMI -> ;
-Statements -> WriteS SEMI
+Statements -> WriteS 
 CondiStm -> IF Condition THEN Statement ELSE Statement
 Statements -> CondiStm
-States -> States Statement
+;
+SEMI -> ;
+ComStates ->ComStates  Statement SEMI
 end
 END -> end
-ComplexStm -> _BEGIN_ States END
+ComplexStm -> _BEGIN_ ComStates END
 Statements -> ComplexStm
 SubPro -> DeclarePart Statement
 .

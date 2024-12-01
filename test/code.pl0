@@ -1,6 +1,16 @@
 {The Man Who Sold the }World}
-const z = 0;
+const z=0;
 var head(1:10), foot, cock, rabbit, n;
+procedure multiply;
+	var a,b;
+	begin
+		a:=x; b:=y; z:=0;
+		while b>0 do
+			begin
+				if odd b then z:=z+a;
+				a:=2*a; b:=b/2;
+			end;
+	end;
 begin
     n := z;
     read(head(z), foot)
@@ -13,9 +23,9 @@ begin
         begin
             write(cock, rabbit);
             n := n + 1;
-        end
+        end;
         cock := cock + 1;
     end;
-    if n = 0 then write(0,0);else write(1,0);
+    if n = 0 then write(0,0)else write(1,0);
     
 end.
