@@ -1,0 +1,1713 @@
+Grammar
+
+    0 $accept: Program $end
+
+    1 Program: SubPro DOT
+
+    2 SubPro: DeclarePart Statements
+    3       | Statements
+
+    4 DeclarePart: ConstDec
+    5            | ConstDec VarDec
+    6            | ConstDec ProDec
+    7            | ConstDec VarDec ProDec
+    8            | VarDec ProDec
+    9            | VarDec
+   10            | ProDec
+
+   11 ConstDec: ConstDec CONST ConstDef SEMI
+   12         | CONST ConstDef SEMI
+
+   13 ConstDef: ConstDef COMMA CDefine
+   14         | CDefine
+
+   15 CDefine: IDENTIFIER EQUAL INTEGER_VAL
+
+   16 VarDec: VarDec VarObj
+   17       | VarObj
+
+   18 VarObj: VAR IdentiDef SEMI
+
+   19 IdentiDef: IdentiDef COMMA IdentiObject
+   20          | IdentiObject
+
+   21 IdentiObject: IDENTIFIER
+   22             | IDENTIFIER Array
+
+   23 Array: SL_PAREN ArrayIndex COLON ArrayIndex SR_PAREN
+
+   24 ArrayIndex: INTEGER_VAL
+   25           | IDENTIFIER
+
+   26 ProDec: ProceHead SubPro SEMI
+   27       | ProDec ProceHead SubPro SEMI
+
+   28 ProceHead: PROCEDURE IDENTIFIER SEMI
+
+   29 Statements: AssignStm
+   30           | ComplexStm
+   31           | CondiStm
+   32           | WhileStm
+   33           | CallS
+   34           | ReadS
+   35           | WriteS
+
+   36 Identifier: IDENTIFIER SL_PAREN INdex_Index SR_PAREN
+   37           | IDENTIFIER
+
+   38 INdex_Index: Expr
+
+   39 AssignStm: Identifier ASSIGN Expr
+
+   40 ComplexStm: _BEGIN_ ComStates END
+
+   41 ComStates: Statements SEMI
+   42          | ComStates Statements SEMI
+
+   43 Condition: Expr CMP Expr
+   44          | ODD Expr
+
+   45 CMP: EQUAL
+   46    | NOTEQUAL
+   47    | LESS
+   48    | GREATER
+   49    | LESS_EQUAL
+   50    | GREATER_EQUAL
+
+   51 CondiStm: IF Condition THEN Statements
+   52         | IF Condition THEN Statements ELSE Statements
+
+   53 Expr: Expr PLUS Term
+   54     | Expr MINUS Term
+   55     | PLUS Term
+   56     | MINUS Term
+   57     | Term
+
+   58 Term: Term TIMES Factor
+   59     | Term DIVIDE Factor
+   60     | Factor
+
+   61 Factor: Identifier
+   62       | INTEGER_VAL
+   63       | SL_PAREN Expr SR_PAREN
+
+   64 WhileStm: WHILE Condition DO Statements
+
+   65 CallS: CALL IDENTIFIER
+   66      | CALL IDENTIFIER SL_PAREN Ccontent SR_PAREN
+
+   67 Ccontent: Ccontent COMMA CconObj
+   68         | CconObj
+
+   69 CconObj: Expr
+
+   70 ReadS: READ SL_PAREN Rcontent SR_PAREN
+
+   71 Rcontent: Rcontent COMMA RconObj
+   72         | RconObj
+
+   73 RconObj: Identifier
+
+   74 WriteS: WRITE SL_PAREN Wcontent SR_PAREN
+
+   75 Wcontent: Wcontent COMMA WconObj
+   76         | WconObj
+
+   77 WconObj: Expr
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+INTEGER_VAL (258) 15 24 62
+IDENTIFIER (259) 15 21 22 25 28 36 37 65 66
+PROCEDURE (260) 28
+IF (261) 51 52
+THEN (262) 51 52
+ELSE (263) 52
+WHILE (264) 64
+DO (265) 64
+READ (266) 70
+WRITE (267) 74
+CALL (268) 65 66
+_BEGIN_ (269) 40
+END (270) 40
+CONST (271) 11 12
+VAR (272) 18
+ODD (273) 44
+SL_PAREN (274) 23 36 63 66 70 74
+SR_PAREN (275) 23 36 63 66 70 74
+COMMA (276) 13 19 67 71 75
+COLON (277) 23
+SEMI (278) 11 12 18 26 27 28 41 42
+DOT (279) 1
+PLUS (280) 53 55
+MINUS (281) 54 56
+TIMES (282) 58
+DIVIDE (283) 59
+ASSIGN (284) 39
+EQUAL (285) 15 45
+LESS (286) 47
+GREATER (287) 48
+NOTEQUAL (288) 46
+GREATER_EQUAL (289) 50
+LESS_EQUAL (290) 49
+LOWER_THAN_ELSE (291)
+
+
+Nonterminals, with rules where they appear
+
+$accept (37)
+    on left: 0
+Program (38)
+    on left: 1, on right: 0
+SubPro (39)
+    on left: 2 3, on right: 1 26 27
+DeclarePart (40)
+    on left: 4 5 6 7 8 9 10, on right: 2
+ConstDec (41)
+    on left: 11 12, on right: 4 5 6 7 11
+ConstDef (42)
+    on left: 13 14, on right: 11 12 13
+CDefine (43)
+    on left: 15, on right: 13 14
+VarDec (44)
+    on left: 16 17, on right: 5 7 8 9 16
+VarObj (45)
+    on left: 18, on right: 16 17
+IdentiDef (46)
+    on left: 19 20, on right: 18 19
+IdentiObject (47)
+    on left: 21 22, on right: 19 20
+Array (48)
+    on left: 23, on right: 22
+ArrayIndex (49)
+    on left: 24 25, on right: 23
+ProDec (50)
+    on left: 26 27, on right: 6 7 8 10 27
+ProceHead (51)
+    on left: 28, on right: 26 27
+Statements (52)
+    on left: 29 30 31 32 33 34 35, on right: 2 3 41 42 51 52 64
+Identifier (53)
+    on left: 36 37, on right: 39 61 73
+INdex_Index (54)
+    on left: 38, on right: 36
+AssignStm (55)
+    on left: 39, on right: 29
+ComplexStm (56)
+    on left: 40, on right: 30
+ComStates (57)
+    on left: 41 42, on right: 40 42
+Condition (58)
+    on left: 43 44, on right: 51 52 64
+CMP (59)
+    on left: 45 46 47 48 49 50, on right: 43
+CondiStm (60)
+    on left: 51 52, on right: 31
+Expr (61)
+    on left: 53 54 55 56 57, on right: 38 39 43 44 53 54 63 69 77
+Term (62)
+    on left: 58 59 60, on right: 53 54 55 56 57 58 59
+Factor (63)
+    on left: 61 62 63, on right: 58 59 60
+WhileStm (64)
+    on left: 64, on right: 32
+CallS (65)
+    on left: 65 66, on right: 33
+Ccontent (66)
+    on left: 67 68, on right: 66 67
+CconObj (67)
+    on left: 69, on right: 67 68
+ReadS (68)
+    on left: 70, on right: 34
+Rcontent (69)
+    on left: 71 72, on right: 70 71
+RconObj (70)
+    on left: 73, on right: 71 72
+WriteS (71)
+    on left: 74, on right: 35
+Wcontent (72)
+    on left: 75 76, on right: 74 75
+WconObj (73)
+    on left: 77, on right: 75 76
+
+
+State 0
+
+    0 $accept: . Program $end
+
+    IDENTIFIER  shift, and go to state 1
+    PROCEDURE   shift, and go to state 2
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+    CONST       shift, and go to state 9
+    VAR         shift, and go to state 10
+
+    Program      go to state 11
+    SubPro       go to state 12
+    DeclarePart  go to state 13
+    ConstDec     go to state 14
+    VarDec       go to state 15
+    VarObj       go to state 16
+    ProDec       go to state 17
+    ProceHead    go to state 18
+    Statements   go to state 19
+    Identifier   go to state 20
+    AssignStm    go to state 21
+    ComplexStm   go to state 22
+    CondiStm     go to state 23
+    WhileStm     go to state 24
+    CallS        go to state 25
+    ReadS        go to state 26
+    WriteS       go to state 27
+
+
+State 1
+
+   36 Identifier: IDENTIFIER . SL_PAREN INdex_Index SR_PAREN
+   37           | IDENTIFIER .
+
+    SL_PAREN  shift, and go to state 28
+
+    $default  reduce using rule 37 (Identifier)
+
+
+State 2
+
+   28 ProceHead: PROCEDURE . IDENTIFIER SEMI
+
+    IDENTIFIER  shift, and go to state 29
+
+
+State 3
+
+   51 CondiStm: IF . Condition THEN Statements
+   52         | IF . Condition THEN Statements ELSE Statements
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    ODD          shift, and go to state 31
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Condition   go to state 36
+    Expr        go to state 37
+    Term        go to state 38
+    Factor      go to state 39
+
+
+State 4
+
+   64 WhileStm: WHILE . Condition DO Statements
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    ODD          shift, and go to state 31
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Condition   go to state 40
+    Expr        go to state 37
+    Term        go to state 38
+    Factor      go to state 39
+
+
+State 5
+
+   70 ReadS: READ . SL_PAREN Rcontent SR_PAREN
+
+    SL_PAREN  shift, and go to state 41
+
+
+State 6
+
+   74 WriteS: WRITE . SL_PAREN Wcontent SR_PAREN
+
+    SL_PAREN  shift, and go to state 42
+
+
+State 7
+
+   65 CallS: CALL . IDENTIFIER
+   66      | CALL . IDENTIFIER SL_PAREN Ccontent SR_PAREN
+
+    IDENTIFIER  shift, and go to state 43
+
+
+State 8
+
+   40 ComplexStm: _BEGIN_ . ComStates END
+
+    IDENTIFIER  shift, and go to state 1
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+
+    Statements  go to state 44
+    Identifier  go to state 20
+    AssignStm   go to state 21
+    ComplexStm  go to state 22
+    ComStates   go to state 45
+    CondiStm    go to state 23
+    WhileStm    go to state 24
+    CallS       go to state 25
+    ReadS       go to state 26
+    WriteS      go to state 27
+
+
+State 9
+
+   12 ConstDec: CONST . ConstDef SEMI
+
+    IDENTIFIER  shift, and go to state 46
+
+    ConstDef  go to state 47
+    CDefine   go to state 48
+
+
+State 10
+
+   18 VarObj: VAR . IdentiDef SEMI
+
+    IDENTIFIER  shift, and go to state 49
+
+    IdentiDef     go to state 50
+    IdentiObject  go to state 51
+
+
+State 11
+
+    0 $accept: Program . $end
+
+    $end  shift, and go to state 52
+
+
+State 12
+
+    1 Program: SubPro . DOT
+
+    DOT  shift, and go to state 53
+
+
+State 13
+
+    2 SubPro: DeclarePart . Statements
+
+    IDENTIFIER  shift, and go to state 1
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+
+    Statements  go to state 54
+    Identifier  go to state 20
+    AssignStm   go to state 21
+    ComplexStm  go to state 22
+    CondiStm    go to state 23
+    WhileStm    go to state 24
+    CallS       go to state 25
+    ReadS       go to state 26
+    WriteS      go to state 27
+
+
+State 14
+
+    4 DeclarePart: ConstDec .
+    5            | ConstDec . VarDec
+    6            | ConstDec . ProDec
+    7            | ConstDec . VarDec ProDec
+   11 ConstDec: ConstDec . CONST ConstDef SEMI
+
+    PROCEDURE  shift, and go to state 2
+    CONST      shift, and go to state 55
+    VAR        shift, and go to state 10
+
+    $default  reduce using rule 4 (DeclarePart)
+
+    VarDec     go to state 56
+    VarObj     go to state 16
+    ProDec     go to state 57
+    ProceHead  go to state 18
+
+
+State 15
+
+    8 DeclarePart: VarDec . ProDec
+    9            | VarDec .
+   16 VarDec: VarDec . VarObj
+
+    PROCEDURE  shift, and go to state 2
+    VAR        shift, and go to state 10
+
+    $default  reduce using rule 9 (DeclarePart)
+
+    VarObj     go to state 58
+    ProDec     go to state 59
+    ProceHead  go to state 18
+
+
+State 16
+
+   17 VarDec: VarObj .
+
+    $default  reduce using rule 17 (VarDec)
+
+
+State 17
+
+   10 DeclarePart: ProDec .
+   27 ProDec: ProDec . ProceHead SubPro SEMI
+
+    PROCEDURE  shift, and go to state 2
+
+    $default  reduce using rule 10 (DeclarePart)
+
+    ProceHead  go to state 60
+
+
+State 18
+
+   26 ProDec: ProceHead . SubPro SEMI
+
+    IDENTIFIER  shift, and go to state 1
+    PROCEDURE   shift, and go to state 2
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+    CONST       shift, and go to state 9
+    VAR         shift, and go to state 10
+
+    SubPro       go to state 61
+    DeclarePart  go to state 13
+    ConstDec     go to state 14
+    VarDec       go to state 15
+    VarObj       go to state 16
+    ProDec       go to state 17
+    ProceHead    go to state 18
+    Statements   go to state 19
+    Identifier   go to state 20
+    AssignStm    go to state 21
+    ComplexStm   go to state 22
+    CondiStm     go to state 23
+    WhileStm     go to state 24
+    CallS        go to state 25
+    ReadS        go to state 26
+    WriteS       go to state 27
+
+
+State 19
+
+    3 SubPro: Statements .
+
+    $default  reduce using rule 3 (SubPro)
+
+
+State 20
+
+   39 AssignStm: Identifier . ASSIGN Expr
+
+    ASSIGN  shift, and go to state 62
+
+
+State 21
+
+   29 Statements: AssignStm .
+
+    $default  reduce using rule 29 (Statements)
+
+
+State 22
+
+   30 Statements: ComplexStm .
+
+    $default  reduce using rule 30 (Statements)
+
+
+State 23
+
+   31 Statements: CondiStm .
+
+    $default  reduce using rule 31 (Statements)
+
+
+State 24
+
+   32 Statements: WhileStm .
+
+    $default  reduce using rule 32 (Statements)
+
+
+State 25
+
+   33 Statements: CallS .
+
+    $default  reduce using rule 33 (Statements)
+
+
+State 26
+
+   34 Statements: ReadS .
+
+    $default  reduce using rule 34 (Statements)
+
+
+State 27
+
+   35 Statements: WriteS .
+
+    $default  reduce using rule 35 (Statements)
+
+
+State 28
+
+   36 Identifier: IDENTIFIER SL_PAREN . INdex_Index SR_PAREN
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier   go to state 35
+    INdex_Index  go to state 63
+    Expr         go to state 64
+    Term         go to state 38
+    Factor       go to state 39
+
+
+State 29
+
+   28 ProceHead: PROCEDURE IDENTIFIER . SEMI
+
+    SEMI  shift, and go to state 65
+
+
+State 30
+
+   62 Factor: INTEGER_VAL .
+
+    $default  reduce using rule 62 (Factor)
+
+
+State 31
+
+   44 Condition: ODD . Expr
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Expr        go to state 66
+    Term        go to state 38
+    Factor      go to state 39
+
+
+State 32
+
+   63 Factor: SL_PAREN . Expr SR_PAREN
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Expr        go to state 67
+    Term        go to state 38
+    Factor      go to state 39
+
+
+State 33
+
+   55 Expr: PLUS . Term
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+
+    Identifier  go to state 35
+    Term        go to state 68
+    Factor      go to state 39
+
+
+State 34
+
+   56 Expr: MINUS . Term
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+
+    Identifier  go to state 35
+    Term        go to state 69
+    Factor      go to state 39
+
+
+State 35
+
+   61 Factor: Identifier .
+
+    $default  reduce using rule 61 (Factor)
+
+
+State 36
+
+   51 CondiStm: IF Condition . THEN Statements
+   52         | IF Condition . THEN Statements ELSE Statements
+
+    THEN  shift, and go to state 70
+
+
+State 37
+
+   43 Condition: Expr . CMP Expr
+   53 Expr: Expr . PLUS Term
+   54     | Expr . MINUS Term
+
+    PLUS           shift, and go to state 71
+    MINUS          shift, and go to state 72
+    EQUAL          shift, and go to state 73
+    LESS           shift, and go to state 74
+    GREATER        shift, and go to state 75
+    NOTEQUAL       shift, and go to state 76
+    GREATER_EQUAL  shift, and go to state 77
+    LESS_EQUAL     shift, and go to state 78
+
+    CMP  go to state 79
+
+
+State 38
+
+   57 Expr: Term .
+   58 Term: Term . TIMES Factor
+   59     | Term . DIVIDE Factor
+
+    TIMES   shift, and go to state 80
+    DIVIDE  shift, and go to state 81
+
+    $default  reduce using rule 57 (Expr)
+
+
+State 39
+
+   60 Term: Factor .
+
+    $default  reduce using rule 60 (Term)
+
+
+State 40
+
+   64 WhileStm: WHILE Condition . DO Statements
+
+    DO  shift, and go to state 82
+
+
+State 41
+
+   70 ReadS: READ SL_PAREN . Rcontent SR_PAREN
+
+    IDENTIFIER  shift, and go to state 1
+
+    Identifier  go to state 83
+    Rcontent    go to state 84
+    RconObj     go to state 85
+
+
+State 42
+
+   74 WriteS: WRITE SL_PAREN . Wcontent SR_PAREN
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Expr        go to state 86
+    Term        go to state 38
+    Factor      go to state 39
+    Wcontent    go to state 87
+    WconObj     go to state 88
+
+
+State 43
+
+   65 CallS: CALL IDENTIFIER .
+   66      | CALL IDENTIFIER . SL_PAREN Ccontent SR_PAREN
+
+    SL_PAREN  shift, and go to state 89
+
+    $default  reduce using rule 65 (CallS)
+
+
+State 44
+
+   41 ComStates: Statements . SEMI
+
+    SEMI  shift, and go to state 90
+
+
+State 45
+
+   40 ComplexStm: _BEGIN_ ComStates . END
+   42 ComStates: ComStates . Statements SEMI
+
+    IDENTIFIER  shift, and go to state 1
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+    END         shift, and go to state 91
+
+    Statements  go to state 92
+    Identifier  go to state 20
+    AssignStm   go to state 21
+    ComplexStm  go to state 22
+    CondiStm    go to state 23
+    WhileStm    go to state 24
+    CallS       go to state 25
+    ReadS       go to state 26
+    WriteS      go to state 27
+
+
+State 46
+
+   15 CDefine: IDENTIFIER . EQUAL INTEGER_VAL
+
+    EQUAL  shift, and go to state 93
+
+
+State 47
+
+   12 ConstDec: CONST ConstDef . SEMI
+   13 ConstDef: ConstDef . COMMA CDefine
+
+    COMMA  shift, and go to state 94
+    SEMI   shift, and go to state 95
+
+
+State 48
+
+   14 ConstDef: CDefine .
+
+    $default  reduce using rule 14 (ConstDef)
+
+
+State 49
+
+   21 IdentiObject: IDENTIFIER .
+   22             | IDENTIFIER . Array
+
+    SL_PAREN  shift, and go to state 96
+
+    $default  reduce using rule 21 (IdentiObject)
+
+    Array  go to state 97
+
+
+State 50
+
+   18 VarObj: VAR IdentiDef . SEMI
+   19 IdentiDef: IdentiDef . COMMA IdentiObject
+
+    COMMA  shift, and go to state 98
+    SEMI   shift, and go to state 99
+
+
+State 51
+
+   20 IdentiDef: IdentiObject .
+
+    $default  reduce using rule 20 (IdentiDef)
+
+
+State 52
+
+    0 $accept: Program $end .
+
+    $default  accept
+
+
+State 53
+
+    1 Program: SubPro DOT .
+
+    $default  reduce using rule 1 (Program)
+
+
+State 54
+
+    2 SubPro: DeclarePart Statements .
+
+    $default  reduce using rule 2 (SubPro)
+
+
+State 55
+
+   11 ConstDec: ConstDec CONST . ConstDef SEMI
+
+    IDENTIFIER  shift, and go to state 46
+
+    ConstDef  go to state 100
+    CDefine   go to state 48
+
+
+State 56
+
+    5 DeclarePart: ConstDec VarDec .
+    7            | ConstDec VarDec . ProDec
+   16 VarDec: VarDec . VarObj
+
+    PROCEDURE  shift, and go to state 2
+    VAR        shift, and go to state 10
+
+    $default  reduce using rule 5 (DeclarePart)
+
+    VarObj     go to state 58
+    ProDec     go to state 101
+    ProceHead  go to state 18
+
+
+State 57
+
+    6 DeclarePart: ConstDec ProDec .
+   27 ProDec: ProDec . ProceHead SubPro SEMI
+
+    PROCEDURE  shift, and go to state 2
+
+    $default  reduce using rule 6 (DeclarePart)
+
+    ProceHead  go to state 60
+
+
+State 58
+
+   16 VarDec: VarDec VarObj .
+
+    $default  reduce using rule 16 (VarDec)
+
+
+State 59
+
+    8 DeclarePart: VarDec ProDec .
+   27 ProDec: ProDec . ProceHead SubPro SEMI
+
+    PROCEDURE  shift, and go to state 2
+
+    $default  reduce using rule 8 (DeclarePart)
+
+    ProceHead  go to state 60
+
+
+State 60
+
+   27 ProDec: ProDec ProceHead . SubPro SEMI
+
+    IDENTIFIER  shift, and go to state 1
+    PROCEDURE   shift, and go to state 2
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+    CONST       shift, and go to state 9
+    VAR         shift, and go to state 10
+
+    SubPro       go to state 102
+    DeclarePart  go to state 13
+    ConstDec     go to state 14
+    VarDec       go to state 15
+    VarObj       go to state 16
+    ProDec       go to state 17
+    ProceHead    go to state 18
+    Statements   go to state 19
+    Identifier   go to state 20
+    AssignStm    go to state 21
+    ComplexStm   go to state 22
+    CondiStm     go to state 23
+    WhileStm     go to state 24
+    CallS        go to state 25
+    ReadS        go to state 26
+    WriteS       go to state 27
+
+
+State 61
+
+   26 ProDec: ProceHead SubPro . SEMI
+
+    SEMI  shift, and go to state 103
+
+
+State 62
+
+   39 AssignStm: Identifier ASSIGN . Expr
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Expr        go to state 104
+    Term        go to state 38
+    Factor      go to state 39
+
+
+State 63
+
+   36 Identifier: IDENTIFIER SL_PAREN INdex_Index . SR_PAREN
+
+    SR_PAREN  shift, and go to state 105
+
+
+State 64
+
+   38 INdex_Index: Expr .
+   53 Expr: Expr . PLUS Term
+   54     | Expr . MINUS Term
+
+    PLUS   shift, and go to state 71
+    MINUS  shift, and go to state 72
+
+    $default  reduce using rule 38 (INdex_Index)
+
+
+State 65
+
+   28 ProceHead: PROCEDURE IDENTIFIER SEMI .
+
+    $default  reduce using rule 28 (ProceHead)
+
+
+State 66
+
+   44 Condition: ODD Expr .
+   53 Expr: Expr . PLUS Term
+   54     | Expr . MINUS Term
+
+    PLUS   shift, and go to state 71
+    MINUS  shift, and go to state 72
+
+    $default  reduce using rule 44 (Condition)
+
+
+State 67
+
+   53 Expr: Expr . PLUS Term
+   54     | Expr . MINUS Term
+   63 Factor: SL_PAREN Expr . SR_PAREN
+
+    SR_PAREN  shift, and go to state 106
+    PLUS      shift, and go to state 71
+    MINUS     shift, and go to state 72
+
+
+State 68
+
+   55 Expr: PLUS Term .
+   58 Term: Term . TIMES Factor
+   59     | Term . DIVIDE Factor
+
+    TIMES   shift, and go to state 80
+    DIVIDE  shift, and go to state 81
+
+    $default  reduce using rule 55 (Expr)
+
+
+State 69
+
+   56 Expr: MINUS Term .
+   58 Term: Term . TIMES Factor
+   59     | Term . DIVIDE Factor
+
+    TIMES   shift, and go to state 80
+    DIVIDE  shift, and go to state 81
+
+    $default  reduce using rule 56 (Expr)
+
+
+State 70
+
+   51 CondiStm: IF Condition THEN . Statements
+   52         | IF Condition THEN . Statements ELSE Statements
+
+    IDENTIFIER  shift, and go to state 1
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+
+    Statements  go to state 107
+    Identifier  go to state 20
+    AssignStm   go to state 21
+    ComplexStm  go to state 22
+    CondiStm    go to state 23
+    WhileStm    go to state 24
+    CallS       go to state 25
+    ReadS       go to state 26
+    WriteS      go to state 27
+
+
+State 71
+
+   53 Expr: Expr PLUS . Term
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+
+    Identifier  go to state 35
+    Term        go to state 108
+    Factor      go to state 39
+
+
+State 72
+
+   54 Expr: Expr MINUS . Term
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+
+    Identifier  go to state 35
+    Term        go to state 109
+    Factor      go to state 39
+
+
+State 73
+
+   45 CMP: EQUAL .
+
+    $default  reduce using rule 45 (CMP)
+
+
+State 74
+
+   47 CMP: LESS .
+
+    $default  reduce using rule 47 (CMP)
+
+
+State 75
+
+   48 CMP: GREATER .
+
+    $default  reduce using rule 48 (CMP)
+
+
+State 76
+
+   46 CMP: NOTEQUAL .
+
+    $default  reduce using rule 46 (CMP)
+
+
+State 77
+
+   50 CMP: GREATER_EQUAL .
+
+    $default  reduce using rule 50 (CMP)
+
+
+State 78
+
+   49 CMP: LESS_EQUAL .
+
+    $default  reduce using rule 49 (CMP)
+
+
+State 79
+
+   43 Condition: Expr CMP . Expr
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Expr        go to state 110
+    Term        go to state 38
+    Factor      go to state 39
+
+
+State 80
+
+   58 Term: Term TIMES . Factor
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+
+    Identifier  go to state 35
+    Factor      go to state 111
+
+
+State 81
+
+   59 Term: Term DIVIDE . Factor
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+
+    Identifier  go to state 35
+    Factor      go to state 112
+
+
+State 82
+
+   64 WhileStm: WHILE Condition DO . Statements
+
+    IDENTIFIER  shift, and go to state 1
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+
+    Statements  go to state 113
+    Identifier  go to state 20
+    AssignStm   go to state 21
+    ComplexStm  go to state 22
+    CondiStm    go to state 23
+    WhileStm    go to state 24
+    CallS       go to state 25
+    ReadS       go to state 26
+    WriteS      go to state 27
+
+
+State 83
+
+   73 RconObj: Identifier .
+
+    $default  reduce using rule 73 (RconObj)
+
+
+State 84
+
+   70 ReadS: READ SL_PAREN Rcontent . SR_PAREN
+   71 Rcontent: Rcontent . COMMA RconObj
+
+    SR_PAREN  shift, and go to state 114
+    COMMA     shift, and go to state 115
+
+
+State 85
+
+   72 Rcontent: RconObj .
+
+    $default  reduce using rule 72 (Rcontent)
+
+
+State 86
+
+   53 Expr: Expr . PLUS Term
+   54     | Expr . MINUS Term
+   77 WconObj: Expr .
+
+    PLUS   shift, and go to state 71
+    MINUS  shift, and go to state 72
+
+    $default  reduce using rule 77 (WconObj)
+
+
+State 87
+
+   74 WriteS: WRITE SL_PAREN Wcontent . SR_PAREN
+   75 Wcontent: Wcontent . COMMA WconObj
+
+    SR_PAREN  shift, and go to state 116
+    COMMA     shift, and go to state 117
+
+
+State 88
+
+   76 Wcontent: WconObj .
+
+    $default  reduce using rule 76 (Wcontent)
+
+
+State 89
+
+   66 CallS: CALL IDENTIFIER SL_PAREN . Ccontent SR_PAREN
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Expr        go to state 118
+    Term        go to state 38
+    Factor      go to state 39
+    Ccontent    go to state 119
+    CconObj     go to state 120
+
+
+State 90
+
+   41 ComStates: Statements SEMI .
+
+    $default  reduce using rule 41 (ComStates)
+
+
+State 91
+
+   40 ComplexStm: _BEGIN_ ComStates END .
+
+    $default  reduce using rule 40 (ComplexStm)
+
+
+State 92
+
+   42 ComStates: ComStates Statements . SEMI
+
+    SEMI  shift, and go to state 121
+
+
+State 93
+
+   15 CDefine: IDENTIFIER EQUAL . INTEGER_VAL
+
+    INTEGER_VAL  shift, and go to state 122
+
+
+State 94
+
+   13 ConstDef: ConstDef COMMA . CDefine
+
+    IDENTIFIER  shift, and go to state 46
+
+    CDefine  go to state 123
+
+
+State 95
+
+   12 ConstDec: CONST ConstDef SEMI .
+
+    $default  reduce using rule 12 (ConstDec)
+
+
+State 96
+
+   23 Array: SL_PAREN . ArrayIndex COLON ArrayIndex SR_PAREN
+
+    INTEGER_VAL  shift, and go to state 124
+    IDENTIFIER   shift, and go to state 125
+
+    ArrayIndex  go to state 126
+
+
+State 97
+
+   22 IdentiObject: IDENTIFIER Array .
+
+    $default  reduce using rule 22 (IdentiObject)
+
+
+State 98
+
+   19 IdentiDef: IdentiDef COMMA . IdentiObject
+
+    IDENTIFIER  shift, and go to state 49
+
+    IdentiObject  go to state 127
+
+
+State 99
+
+   18 VarObj: VAR IdentiDef SEMI .
+
+    $default  reduce using rule 18 (VarObj)
+
+
+State 100
+
+   11 ConstDec: ConstDec CONST ConstDef . SEMI
+   13 ConstDef: ConstDef . COMMA CDefine
+
+    COMMA  shift, and go to state 94
+    SEMI   shift, and go to state 128
+
+
+State 101
+
+    7 DeclarePart: ConstDec VarDec ProDec .
+   27 ProDec: ProDec . ProceHead SubPro SEMI
+
+    PROCEDURE  shift, and go to state 2
+
+    $default  reduce using rule 7 (DeclarePart)
+
+    ProceHead  go to state 60
+
+
+State 102
+
+   27 ProDec: ProDec ProceHead SubPro . SEMI
+
+    SEMI  shift, and go to state 129
+
+
+State 103
+
+   26 ProDec: ProceHead SubPro SEMI .
+
+    $default  reduce using rule 26 (ProDec)
+
+
+State 104
+
+   39 AssignStm: Identifier ASSIGN Expr .
+   53 Expr: Expr . PLUS Term
+   54     | Expr . MINUS Term
+
+    PLUS   shift, and go to state 71
+    MINUS  shift, and go to state 72
+
+    $default  reduce using rule 39 (AssignStm)
+
+
+State 105
+
+   36 Identifier: IDENTIFIER SL_PAREN INdex_Index SR_PAREN .
+
+    $default  reduce using rule 36 (Identifier)
+
+
+State 106
+
+   63 Factor: SL_PAREN Expr SR_PAREN .
+
+    $default  reduce using rule 63 (Factor)
+
+
+State 107
+
+   51 CondiStm: IF Condition THEN Statements .
+   52         | IF Condition THEN Statements . ELSE Statements
+
+    ELSE  shift, and go to state 130
+
+    $default  reduce using rule 51 (CondiStm)
+
+
+State 108
+
+   53 Expr: Expr PLUS Term .
+   58 Term: Term . TIMES Factor
+   59     | Term . DIVIDE Factor
+
+    TIMES   shift, and go to state 80
+    DIVIDE  shift, and go to state 81
+
+    $default  reduce using rule 53 (Expr)
+
+
+State 109
+
+   54 Expr: Expr MINUS Term .
+   58 Term: Term . TIMES Factor
+   59     | Term . DIVIDE Factor
+
+    TIMES   shift, and go to state 80
+    DIVIDE  shift, and go to state 81
+
+    $default  reduce using rule 54 (Expr)
+
+
+State 110
+
+   43 Condition: Expr CMP Expr .
+   53 Expr: Expr . PLUS Term
+   54     | Expr . MINUS Term
+
+    PLUS   shift, and go to state 71
+    MINUS  shift, and go to state 72
+
+    $default  reduce using rule 43 (Condition)
+
+
+State 111
+
+   58 Term: Term TIMES Factor .
+
+    $default  reduce using rule 58 (Term)
+
+
+State 112
+
+   59 Term: Term DIVIDE Factor .
+
+    $default  reduce using rule 59 (Term)
+
+
+State 113
+
+   64 WhileStm: WHILE Condition DO Statements .
+
+    $default  reduce using rule 64 (WhileStm)
+
+
+State 114
+
+   70 ReadS: READ SL_PAREN Rcontent SR_PAREN .
+
+    $default  reduce using rule 70 (ReadS)
+
+
+State 115
+
+   71 Rcontent: Rcontent COMMA . RconObj
+
+    IDENTIFIER  shift, and go to state 1
+
+    Identifier  go to state 83
+    RconObj     go to state 131
+
+
+State 116
+
+   74 WriteS: WRITE SL_PAREN Wcontent SR_PAREN .
+
+    $default  reduce using rule 74 (WriteS)
+
+
+State 117
+
+   75 Wcontent: Wcontent COMMA . WconObj
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Expr        go to state 86
+    Term        go to state 38
+    Factor      go to state 39
+    WconObj     go to state 132
+
+
+State 118
+
+   53 Expr: Expr . PLUS Term
+   54     | Expr . MINUS Term
+   69 CconObj: Expr .
+
+    PLUS   shift, and go to state 71
+    MINUS  shift, and go to state 72
+
+    $default  reduce using rule 69 (CconObj)
+
+
+State 119
+
+   66 CallS: CALL IDENTIFIER SL_PAREN Ccontent . SR_PAREN
+   67 Ccontent: Ccontent . COMMA CconObj
+
+    SR_PAREN  shift, and go to state 133
+    COMMA     shift, and go to state 134
+
+
+State 120
+
+   68 Ccontent: CconObj .
+
+    $default  reduce using rule 68 (Ccontent)
+
+
+State 121
+
+   42 ComStates: ComStates Statements SEMI .
+
+    $default  reduce using rule 42 (ComStates)
+
+
+State 122
+
+   15 CDefine: IDENTIFIER EQUAL INTEGER_VAL .
+
+    $default  reduce using rule 15 (CDefine)
+
+
+State 123
+
+   13 ConstDef: ConstDef COMMA CDefine .
+
+    $default  reduce using rule 13 (ConstDef)
+
+
+State 124
+
+   24 ArrayIndex: INTEGER_VAL .
+
+    $default  reduce using rule 24 (ArrayIndex)
+
+
+State 125
+
+   25 ArrayIndex: IDENTIFIER .
+
+    $default  reduce using rule 25 (ArrayIndex)
+
+
+State 126
+
+   23 Array: SL_PAREN ArrayIndex . COLON ArrayIndex SR_PAREN
+
+    COLON  shift, and go to state 135
+
+
+State 127
+
+   19 IdentiDef: IdentiDef COMMA IdentiObject .
+
+    $default  reduce using rule 19 (IdentiDef)
+
+
+State 128
+
+   11 ConstDec: ConstDec CONST ConstDef SEMI .
+
+    $default  reduce using rule 11 (ConstDec)
+
+
+State 129
+
+   27 ProDec: ProDec ProceHead SubPro SEMI .
+
+    $default  reduce using rule 27 (ProDec)
+
+
+State 130
+
+   52 CondiStm: IF Condition THEN Statements ELSE . Statements
+
+    IDENTIFIER  shift, and go to state 1
+    IF          shift, and go to state 3
+    WHILE       shift, and go to state 4
+    READ        shift, and go to state 5
+    WRITE       shift, and go to state 6
+    CALL        shift, and go to state 7
+    _BEGIN_     shift, and go to state 8
+
+    Statements  go to state 136
+    Identifier  go to state 20
+    AssignStm   go to state 21
+    ComplexStm  go to state 22
+    CondiStm    go to state 23
+    WhileStm    go to state 24
+    CallS       go to state 25
+    ReadS       go to state 26
+    WriteS      go to state 27
+
+
+State 131
+
+   71 Rcontent: Rcontent COMMA RconObj .
+
+    $default  reduce using rule 71 (Rcontent)
+
+
+State 132
+
+   75 Wcontent: Wcontent COMMA WconObj .
+
+    $default  reduce using rule 75 (Wcontent)
+
+
+State 133
+
+   66 CallS: CALL IDENTIFIER SL_PAREN Ccontent SR_PAREN .
+
+    $default  reduce using rule 66 (CallS)
+
+
+State 134
+
+   67 Ccontent: Ccontent COMMA . CconObj
+
+    INTEGER_VAL  shift, and go to state 30
+    IDENTIFIER   shift, and go to state 1
+    SL_PAREN     shift, and go to state 32
+    PLUS         shift, and go to state 33
+    MINUS        shift, and go to state 34
+
+    Identifier  go to state 35
+    Expr        go to state 118
+    Term        go to state 38
+    Factor      go to state 39
+    CconObj     go to state 137
+
+
+State 135
+
+   23 Array: SL_PAREN ArrayIndex COLON . ArrayIndex SR_PAREN
+
+    INTEGER_VAL  shift, and go to state 124
+    IDENTIFIER   shift, and go to state 125
+
+    ArrayIndex  go to state 138
+
+
+State 136
+
+   52 CondiStm: IF Condition THEN Statements ELSE Statements .
+
+    $default  reduce using rule 52 (CondiStm)
+
+
+State 137
+
+   67 Ccontent: Ccontent COMMA CconObj .
+
+    $default  reduce using rule 67 (Ccontent)
+
+
+State 138
+
+   23 Array: SL_PAREN ArrayIndex COLON ArrayIndex . SR_PAREN
+
+    SR_PAREN  shift, and go to state 139
+
+
+State 139
+
+   23 Array: SL_PAREN ArrayIndex COLON ArrayIndex SR_PAREN .
+
+    $default  reduce using rule 23 (Array)
