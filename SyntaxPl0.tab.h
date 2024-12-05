@@ -88,7 +88,7 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 2058 of yacc.c  */
-#line 23 "./src/SyntaxPl0.y"
+#line 24 "./src/SyntaxPl0.y"
 
     struct Node* node;
 

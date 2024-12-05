@@ -72,6 +72,7 @@ ALL RIGHTS DESERVED
  */
 
 #include"./head/main.h"
+#include"./head/semer.h"
 
 FILE *fi;
 FILE *fh;
@@ -85,7 +86,7 @@ int yyrestart();
 
 
 /* Line 371 of yacc.c  */
-#line 89 "SyntaxPl0.tab.c"
+#line 90 "SyntaxPl0.tab.c"
 
 # ifndef YY_NULL
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -163,13 +164,13 @@ extern int yydebug;
 typedef union YYSTYPE
 {
 /* Line 387 of yacc.c  */
-#line 23 "./src/SyntaxPl0.y"
+#line 24 "./src/SyntaxPl0.y"
 
     struct Node* node;
 
 
 /* Line 387 of yacc.c  */
-#line 173 "SyntaxPl0.tab.c"
+#line 174 "SyntaxPl0.tab.c"
 } YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
@@ -197,7 +198,7 @@ int yyparse ();
 /* Copy the second part of user declarations.  */
 
 /* Line 390 of yacc.c  */
-#line 201 "SyntaxPl0.tab.c"
+#line 202 "SyntaxPl0.tab.c"
 
 #ifdef short
 # undef short
@@ -518,14 +519,14 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint16 yyrline[] =
 {
-       0,    45,    45,    51,    55,    61,    66,    71,    76,    81,
-      86,    91,    97,   102,   108,   113,   119,   126,   131,   138,
-     144,   149,   156,   161,   168,   184,   189,   196,   201,   207,
-     237,   242,   247,   252,   257,   262,   267,   274,   279,   285,
-     291,   299,   306,   311,   318,   323,   329,   334,   339,   344,
-     349,   354,   360,   365,   371,   377,   383,   389,   395,   402,
-     408,   414,   421,   427,   433,   440,   446,   451,   457,   462,
-     468,   473,   479,   484,   490,   497,   503,   508,   514
+       0,    46,    46,    52,    56,    62,    67,    72,    77,    82,
+      87,    92,    98,   103,   109,   114,   120,   127,   132,   139,
+     145,   150,   157,   162,   169,   185,   190,   197,   202,   208,
+     238,   243,   248,   253,   258,   263,   268,   275,   280,   286,
+     292,   300,   307,   312,   319,   324,   330,   335,   340,   345,
+     350,   355,   361,   366,   372,   378,   384,   390,   396,   403,
+     409,   415,   422,   428,   434,   441,   447,   452,   458,   463,
+     469,   474,   480,   485,   491,   498,   504,   509,   515
 };
 #endif
 
@@ -1516,7 +1517,7 @@ yyreduce:
     {
         case 2:
 /* Line 1792 of yacc.c  */
-#line 45 "./src/SyntaxPl0.y"
+#line 46 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Program -> SubPro DOT\n");  
                 fprintf(fh,"Program -> SubPro DOT\n");
@@ -1526,7 +1527,7 @@ yyreduce:
 
   case 3:
 /* Line 1792 of yacc.c  */
-#line 51 "./src/SyntaxPl0.y"
+#line 52 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"SubPro -> DeclarePart Statement\n");  
                 fprintf(fh,"SubPro -> DeclarePart Statement\n");
@@ -1535,7 +1536,7 @@ yyreduce:
 
   case 4:
 /* Line 1792 of yacc.c  */
-#line 55 "./src/SyntaxPl0.y"
+#line 56 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"SubPro -> Statement\n");  
                 fprintf(fh,"SubPro -> Statement\n");
@@ -1545,7 +1546,7 @@ yyreduce:
 
   case 5:
 /* Line 1792 of yacc.c  */
-#line 61 "./src/SyntaxPl0.y"
+#line 62 "./src/SyntaxPl0.y"
     {
                   fprintf(fi,"DeclarePart -> ConstDec\n");
                   fprintf(fh,"DeclarePart -> ConstDec\n");
@@ -1555,7 +1556,7 @@ yyreduce:
 
   case 6:
 /* Line 1792 of yacc.c  */
-#line 66 "./src/SyntaxPl0.y"
+#line 67 "./src/SyntaxPl0.y"
     {
                   fprintf(fi,"DeclarePart -> ConstDec VarDec\n");
                   fprintf(fh,"DeclarePart -> ConstDec VarDec\n");
@@ -1565,7 +1566,7 @@ yyreduce:
 
   case 7:
 /* Line 1792 of yacc.c  */
-#line 71 "./src/SyntaxPl0.y"
+#line 72 "./src/SyntaxPl0.y"
     {
                   fprintf(fi,"DeclarePart -> ConstDec ProDec\n");
                   fprintf(fh,"DeclarePart -> ConstDec ProDec\n");
@@ -1575,7 +1576,7 @@ yyreduce:
 
   case 8:
 /* Line 1792 of yacc.c  */
-#line 76 "./src/SyntaxPl0.y"
+#line 77 "./src/SyntaxPl0.y"
     {
                   fprintf(fi,"DeclarePart -> ConstDec VarDec ProDec\n");
                   fprintf(fh,"DeclarePart -> ConstDec VarDec ProDec\n");
@@ -1585,7 +1586,7 @@ yyreduce:
 
   case 9:
 /* Line 1792 of yacc.c  */
-#line 81 "./src/SyntaxPl0.y"
+#line 82 "./src/SyntaxPl0.y"
     {
                   fprintf(fi,"DeclarePart -> VarDec ProDec\n");
                   fprintf(fh,"DeclarePart -> VarDec ProDec\n");
@@ -1595,7 +1596,7 @@ yyreduce:
 
   case 10:
 /* Line 1792 of yacc.c  */
-#line 86 "./src/SyntaxPl0.y"
+#line 87 "./src/SyntaxPl0.y"
     {
                   fprintf(fi,"DeclarePart -> VarDec\n");
                   fprintf(fh,"DeclarePart -> VarDec\n");
@@ -1605,7 +1606,7 @@ yyreduce:
 
   case 11:
 /* Line 1792 of yacc.c  */
-#line 91 "./src/SyntaxPl0.y"
+#line 92 "./src/SyntaxPl0.y"
     {
                   fprintf(fi,"DeclarePart -> ProDec\n");
                   fprintf(fh,"DeclarePart -> ProDec\n");
@@ -1615,7 +1616,7 @@ yyreduce:
 
   case 12:
 /* Line 1792 of yacc.c  */
-#line 97 "./src/SyntaxPl0.y"
+#line 98 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ConstDec -> ConstDec const ConstDef SEMI\n");
                 fprintf(fh,"ConstDec -> ConstDec const ConstDef SEMI\n");
@@ -1625,7 +1626,7 @@ yyreduce:
 
   case 13:
 /* Line 1792 of yacc.c  */
-#line 102 "./src/SyntaxPl0.y"
+#line 103 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ConstDec -> const ConstDef SEMI\n");
                 fprintf(fh,"ConstDec -> const ConstDef SEMI\n");
@@ -1635,7 +1636,7 @@ yyreduce:
 
   case 14:
 /* Line 1792 of yacc.c  */
-#line 108 "./src/SyntaxPl0.y"
+#line 109 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ConstDef -> ConstDef , CDefine\n"); 
                 fprintf(fh,"ConstDef -> ConstDef , CDefine\n");
@@ -1645,7 +1646,7 @@ yyreduce:
 
   case 15:
 /* Line 1792 of yacc.c  */
-#line 113 "./src/SyntaxPl0.y"
+#line 114 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ConstDef -> CDefine\n"); 
                 fprintf(fh,"ConstDef -> CDefine\n");
@@ -1655,7 +1656,7 @@ yyreduce:
 
   case 16:
 /* Line 1792 of yacc.c  */
-#line 119 "./src/SyntaxPl0.y"
+#line 120 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CDefine -> IDENTIFIER = INTEGER_VAL\n");
                 fprintf(fh,"CDefine -> IDENTIFIER = INTEGER_VAL\n");
@@ -1665,7 +1666,7 @@ yyreduce:
 
   case 17:
 /* Line 1792 of yacc.c  */
-#line 126 "./src/SyntaxPl0.y"
+#line 127 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"VarDec -> VarDec VarObj\n");
                 fprintf(fh,"VarDec -> VarDec VarObj\n");
@@ -1675,7 +1676,7 @@ yyreduce:
 
   case 18:
 /* Line 1792 of yacc.c  */
-#line 131 "./src/SyntaxPl0.y"
+#line 132 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"VarDec -> VarObj\n");
                 fprintf(fh,"VarDec -> VarObj\n");
@@ -1686,7 +1687,7 @@ yyreduce:
 
   case 19:
 /* Line 1792 of yacc.c  */
-#line 138 "./src/SyntaxPl0.y"
+#line 139 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"VarObj -> var IdentiDef SEMI\n"); 
                 fprintf(fh,"VarObj -> var IdentiDef SEMI\n");
@@ -1696,7 +1697,7 @@ yyreduce:
 
   case 20:
 /* Line 1792 of yacc.c  */
-#line 144 "./src/SyntaxPl0.y"
+#line 145 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"IdentiDef -> IdentiDef , IdentiObject\n");  
                 fprintf(fh,"IdentiDef -> IdentiDef , IdentiObject\n"); 
@@ -1706,7 +1707,7 @@ yyreduce:
 
   case 21:
 /* Line 1792 of yacc.c  */
-#line 149 "./src/SyntaxPl0.y"
+#line 150 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"IdentiDef -> IdentiObject\n");  
                 fprintf(fh,"IdentiDef -> IdentiObject\n"); 
@@ -1716,7 +1717,7 @@ yyreduce:
 
   case 22:
 /* Line 1792 of yacc.c  */
-#line 156 "./src/SyntaxPl0.y"
+#line 157 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"IdentiObject -> IDENTIFIER\n");
                 fprintf(fh,"IdentiObject -> IDENTIFIER\n");
@@ -1726,7 +1727,7 @@ yyreduce:
 
   case 23:
 /* Line 1792 of yacc.c  */
-#line 161 "./src/SyntaxPl0.y"
+#line 162 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"IdentiObject -> IDENTIFIER Array\n");
                 fprintf(fh,"IdentiObject -> IDENTIFIER Array\n");
@@ -1736,7 +1737,7 @@ yyreduce:
 
   case 24:
 /* Line 1792 of yacc.c  */
-#line 168 "./src/SyntaxPl0.y"
+#line 169 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Array -> SL_PAREN ArrayIndex COLON ArrayIndex SR_PAREN\n");
                 fprintf(fh,"Array -> SL_PAREN ArrayIndex COLON ArrayIndex SR_PAREN\n");
@@ -1746,7 +1747,7 @@ yyreduce:
 
   case 25:
 /* Line 1792 of yacc.c  */
-#line 184 "./src/SyntaxPl0.y"
+#line 185 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ArrayIndex -> INTEGER_VAL\n");
                 fprintf(fh,"ArrayIndex -> INTEGER_VAL\n");
@@ -1756,7 +1757,7 @@ yyreduce:
 
   case 26:
 /* Line 1792 of yacc.c  */
-#line 189 "./src/SyntaxPl0.y"
+#line 190 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ArrayIndex -> IDENTIFIER\n");
                 fprintf(fh,"ArrayIndex -> IDENTIFIER\n");
@@ -1766,7 +1767,7 @@ yyreduce:
 
   case 27:
 /* Line 1792 of yacc.c  */
-#line 196 "./src/SyntaxPl0.y"
+#line 197 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ProDec -> ProceHead SubPro SEMI\n"); 
                 fprintf(fh,"ProDec -> ProceHead SubPro SEMI\n"); 
@@ -1776,7 +1777,7 @@ yyreduce:
 
   case 28:
 /* Line 1792 of yacc.c  */
-#line 201 "./src/SyntaxPl0.y"
+#line 202 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ProDec -> ProDec ProceHead SubPro SEMI\n"); 
                 fprintf(fh,"ProDec -> ProDec ProceHead SubPro SEMI\n"); 
@@ -1786,7 +1787,7 @@ yyreduce:
 
   case 29:
 /* Line 1792 of yacc.c  */
-#line 207 "./src/SyntaxPl0.y"
+#line 208 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ProceHead -> procedure IDENTIFIER SEMI\n");
                 fprintf(fh,"ProceHead -> procedure IDENTIFIER SEMI\n");
@@ -1796,7 +1797,7 @@ yyreduce:
 
   case 30:
 /* Line 1792 of yacc.c  */
-#line 237 "./src/SyntaxPl0.y"
+#line 238 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Statements -> AssignStm \n");
                 fprintf(fh,"Statements -> AssignStm \n");
@@ -1806,7 +1807,7 @@ yyreduce:
 
   case 31:
 /* Line 1792 of yacc.c  */
-#line 242 "./src/SyntaxPl0.y"
+#line 243 "./src/SyntaxPl0.y"
     { 
                 fprintf(fi,"Statements -> ComplexStm\n");
                 fprintf(fh,"Statements -> ComplexStm\n");
@@ -1816,7 +1817,7 @@ yyreduce:
 
   case 32:
 /* Line 1792 of yacc.c  */
-#line 247 "./src/SyntaxPl0.y"
+#line 248 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Statements -> CondiStm\n"); 
                 fprintf(fh,"Statements -> CondiStm\n");
@@ -1826,7 +1827,7 @@ yyreduce:
 
   case 33:
 /* Line 1792 of yacc.c  */
-#line 252 "./src/SyntaxPl0.y"
+#line 253 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Statements -> WhileStm \n");
                 fprintf(fh,"Statements -> WhileStm \n");
@@ -1836,7 +1837,7 @@ yyreduce:
 
   case 34:
 /* Line 1792 of yacc.c  */
-#line 257 "./src/SyntaxPl0.y"
+#line 258 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Statements -> CallS \n");
                 fprintf(fh,"Statements -> CallS \n");
@@ -1846,7 +1847,7 @@ yyreduce:
 
   case 35:
 /* Line 1792 of yacc.c  */
-#line 262 "./src/SyntaxPl0.y"
+#line 263 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Statements -> ReadS \n"); 
                 fprintf(fh,"Statements -> ReadS \n");
@@ -1856,7 +1857,7 @@ yyreduce:
 
   case 36:
 /* Line 1792 of yacc.c  */
-#line 267 "./src/SyntaxPl0.y"
+#line 268 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Statements -> WriteS \n");
                 fprintf(fh,"Statements -> WriteS \n");
@@ -1866,7 +1867,7 @@ yyreduce:
 
   case 37:
 /* Line 1792 of yacc.c  */
-#line 274 "./src/SyntaxPl0.y"
+#line 275 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Identifier -> IDENTIFIER SL_PAREN INdex_Index SR_PAREN\n");
                 fprintf(fh,"Identifier -> IDENTIFIER SL_PAREN INdex_Index SR_PAREN\n");
@@ -1876,7 +1877,7 @@ yyreduce:
 
   case 38:
 /* Line 1792 of yacc.c  */
-#line 279 "./src/SyntaxPl0.y"
+#line 280 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Identifier -> IDENTIFIER\n");
                 fprintf(fh,"Identifier -> IDENTIFIER\n");
@@ -1886,7 +1887,7 @@ yyreduce:
 
   case 39:
 /* Line 1792 of yacc.c  */
-#line 285 "./src/SyntaxPl0.y"
+#line 286 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"INdex_Index -> Expr\n");
                 fprintf(fh,"INdex_Index -> Expr\n");
@@ -1896,7 +1897,7 @@ yyreduce:
 
   case 40:
 /* Line 1792 of yacc.c  */
-#line 291 "./src/SyntaxPl0.y"
+#line 292 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"AssignStm -> Identifier ASSIGN Expr\n");
@@ -1907,7 +1908,7 @@ yyreduce:
 
   case 41:
 /* Line 1792 of yacc.c  */
-#line 299 "./src/SyntaxPl0.y"
+#line 300 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ComplexStm -> _BEGIN_ ComStates END\n"); 
                 fprintf(fh,"ComplexStm -> _BEGIN_ ComStates END\n"); 
@@ -1917,7 +1918,7 @@ yyreduce:
 
   case 42:
 /* Line 1792 of yacc.c  */
-#line 306 "./src/SyntaxPl0.y"
+#line 307 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ComStates -> Statement SEMI\n");
                 fprintf(fh,"ComStates -> Statement SEMI\n");
@@ -1927,7 +1928,7 @@ yyreduce:
 
   case 43:
 /* Line 1792 of yacc.c  */
-#line 311 "./src/SyntaxPl0.y"
+#line 312 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ComStates ->ComStates  Statement SEMI\n");
                 fprintf(fh,"ComStates ->ComStates  Statement SEMI\n");
@@ -1937,7 +1938,7 @@ yyreduce:
 
   case 44:
 /* Line 1792 of yacc.c  */
-#line 318 "./src/SyntaxPl0.y"
+#line 319 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Condition -> Expr CMP Expr\n");
                 fprintf(fh,"Condition -> Expr CMP Expr\n");
@@ -1947,7 +1948,7 @@ yyreduce:
 
   case 45:
 /* Line 1792 of yacc.c  */
-#line 323 "./src/SyntaxPl0.y"
+#line 324 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Condition -> ODD Expr\n");
                 fprintf(fh,"Condition -> ODD Expr\n");
@@ -1957,7 +1958,7 @@ yyreduce:
 
   case 46:
 /* Line 1792 of yacc.c  */
-#line 329 "./src/SyntaxPl0.y"
+#line 330 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CMP -> EQUAL\n"); 
                 fprintf(fh,"CMP -> EQUAL\n"); 
@@ -1967,7 +1968,7 @@ yyreduce:
 
   case 47:
 /* Line 1792 of yacc.c  */
-#line 334 "./src/SyntaxPl0.y"
+#line 335 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CMP -> NOTEQUAL\n");
                 fprintf(fh,"CMP -> NOTEQUAL\n");
@@ -1977,7 +1978,7 @@ yyreduce:
 
   case 48:
 /* Line 1792 of yacc.c  */
-#line 339 "./src/SyntaxPl0.y"
+#line 340 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CMP -> LESS\n"); 
                 fprintf(fh,"CMP -> LESS\n");
@@ -1987,7 +1988,7 @@ yyreduce:
 
   case 49:
 /* Line 1792 of yacc.c  */
-#line 344 "./src/SyntaxPl0.y"
+#line 345 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CMP -> GREATER\n");
                 fprintf(fh,"CMP -> GREATER\n");
@@ -1997,7 +1998,7 @@ yyreduce:
 
   case 50:
 /* Line 1792 of yacc.c  */
-#line 349 "./src/SyntaxPl0.y"
+#line 350 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CMP -> LESS_EQUAL\n"); 
                 fprintf(fh,"CMP -> LESS_EQUAL\n"); 
@@ -2007,7 +2008,7 @@ yyreduce:
 
   case 51:
 /* Line 1792 of yacc.c  */
-#line 354 "./src/SyntaxPl0.y"
+#line 355 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CMP -> GREATER_EQUAL\n");  
                 fprintf(fh,"CMP -> GREATER_EQUAL\n");
@@ -2017,7 +2018,7 @@ yyreduce:
 
   case 52:
 /* Line 1792 of yacc.c  */
-#line 360 "./src/SyntaxPl0.y"
+#line 361 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CondiStm -> IF Condition THEN Statement\n"); 
                 fprintf(fh,"CondiStm -> IF Condition THEN Statement\n"); 
@@ -2027,7 +2028,7 @@ yyreduce:
 
   case 53:
 /* Line 1792 of yacc.c  */
-#line 365 "./src/SyntaxPl0.y"
+#line 366 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CondiStm -> IF Condition THEN Statement ELSE Statement\n");
                 fprintf(fh,"CondiStm -> IF Condition THEN Statement ELSE Statement\n");
@@ -2037,7 +2038,7 @@ yyreduce:
 
   case 54:
 /* Line 1792 of yacc.c  */
-#line 371 "./src/SyntaxPl0.y"
+#line 372 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"Expr -> Expr PLUS Term\n"); 
@@ -2048,7 +2049,7 @@ yyreduce:
 
   case 55:
 /* Line 1792 of yacc.c  */
-#line 377 "./src/SyntaxPl0.y"
+#line 378 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"Expr -> Expr MINUS Term\n");
@@ -2059,7 +2060,7 @@ yyreduce:
 
   case 56:
 /* Line 1792 of yacc.c  */
-#line 383 "./src/SyntaxPl0.y"
+#line 384 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"Expr -> PLUS Term\n");  
@@ -2070,7 +2071,7 @@ yyreduce:
 
   case 57:
 /* Line 1792 of yacc.c  */
-#line 389 "./src/SyntaxPl0.y"
+#line 390 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"Expr -> MINUS Term\n"); 
@@ -2081,7 +2082,7 @@ yyreduce:
 
   case 58:
 /* Line 1792 of yacc.c  */
-#line 395 "./src/SyntaxPl0.y"
+#line 396 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"Expr -> Term\n"); 
@@ -2092,7 +2093,7 @@ yyreduce:
 
   case 59:
 /* Line 1792 of yacc.c  */
-#line 402 "./src/SyntaxPl0.y"
+#line 403 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"Term -> Term TIMES Factor\n"); 
@@ -2103,7 +2104,7 @@ yyreduce:
 
   case 60:
 /* Line 1792 of yacc.c  */
-#line 408 "./src/SyntaxPl0.y"
+#line 409 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"Term -> Term DIVIDE Factor\n"); 
@@ -2114,7 +2115,7 @@ yyreduce:
 
   case 61:
 /* Line 1792 of yacc.c  */
-#line 414 "./src/SyntaxPl0.y"
+#line 415 "./src/SyntaxPl0.y"
     {
                 
                 fprintf(fi,"Term -> Factor\n"); 
@@ -2125,7 +2126,7 @@ yyreduce:
 
   case 62:
 /* Line 1792 of yacc.c  */
-#line 421 "./src/SyntaxPl0.y"
+#line 422 "./src/SyntaxPl0.y"
     {
                 // $$=$1;
                 fprintf(fi,"Factor -> Identifier\n"); 
@@ -2136,7 +2137,7 @@ yyreduce:
 
   case 63:
 /* Line 1792 of yacc.c  */
-#line 427 "./src/SyntaxPl0.y"
+#line 428 "./src/SyntaxPl0.y"
     {
                 //$$=$1;
                 fprintf(fi,"Factor -> INTEGER_VAL\n"); 
@@ -2147,7 +2148,7 @@ yyreduce:
 
   case 64:
 /* Line 1792 of yacc.c  */
-#line 433 "./src/SyntaxPl0.y"
+#line 434 "./src/SyntaxPl0.y"
     {
                 //$$=$2;
                 fprintf(fi,"Factor -> SL_PAREN Expr SR_PAREN\n");
@@ -2158,7 +2159,7 @@ yyreduce:
 
   case 65:
 /* Line 1792 of yacc.c  */
-#line 440 "./src/SyntaxPl0.y"
+#line 441 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"WhileStm -> WHILE Condition DO Statement\n"); 
                 fprintf(fh,"WhileStm -> WHILE Condition DO Statement\n");
@@ -2168,7 +2169,7 @@ yyreduce:
 
   case 66:
 /* Line 1792 of yacc.c  */
-#line 446 "./src/SyntaxPl0.y"
+#line 447 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CallS -> call SL_PAREN IDENTIFIER SR_PAREN\n");  
                 fprintf(fh,"CallS -> call SL_PAREN IDENTIFIER SR_PAREN\n"); 
@@ -2178,7 +2179,7 @@ yyreduce:
 
   case 67:
 /* Line 1792 of yacc.c  */
-#line 451 "./src/SyntaxPl0.y"
+#line 452 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CallS -> call SL_PAREN Ccontent SR_PAREN\n");  
                 fprintf(fh,"CallS -> call SL_PAREN Ccontent SR_PAREN\n"); 
@@ -2188,7 +2189,7 @@ yyreduce:
 
   case 68:
 /* Line 1792 of yacc.c  */
-#line 457 "./src/SyntaxPl0.y"
+#line 458 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Ccontent -> Ccontent COMMA CconObj\n"); 
                 fprintf(fh,"Ccontent -> Ccontent COMMA CconObj\n");
@@ -2198,7 +2199,7 @@ yyreduce:
 
   case 69:
 /* Line 1792 of yacc.c  */
-#line 462 "./src/SyntaxPl0.y"
+#line 463 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Ccontent -> CconObj\n"); 
                 fprintf(fh,"Ccontent -> CconObj\n");
@@ -2208,7 +2209,7 @@ yyreduce:
 
   case 70:
 /* Line 1792 of yacc.c  */
-#line 468 "./src/SyntaxPl0.y"
+#line 469 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"CconObj -> Expr\n");
                 fprintf(fh,"CconObj -> Expr\n");
@@ -2218,7 +2219,7 @@ yyreduce:
 
   case 71:
 /* Line 1792 of yacc.c  */
-#line 473 "./src/SyntaxPl0.y"
+#line 474 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"ReadS -> read SL_PAREN Rcontent SR_PAREN\n");
                 fprintf(fh,"ReadS -> read SL_PAREN Rcontent SR_PAREN\n");
@@ -2228,7 +2229,7 @@ yyreduce:
 
   case 72:
 /* Line 1792 of yacc.c  */
-#line 479 "./src/SyntaxPl0.y"
+#line 480 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Rcontent -> Rcontent COMMA RconObj\n"); 
                 fprintf(fh,"Rcontent -> Rcontent COMMA RconObj\n");
@@ -2238,7 +2239,7 @@ yyreduce:
 
   case 73:
 /* Line 1792 of yacc.c  */
-#line 484 "./src/SyntaxPl0.y"
+#line 485 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Rcontent -> RconObj\n"); 
                 fprintf(fh,"Rcontent -> RconObj\n");
@@ -2248,7 +2249,7 @@ yyreduce:
 
   case 74:
 /* Line 1792 of yacc.c  */
-#line 490 "./src/SyntaxPl0.y"
+#line 491 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"RconObj -> Identifier\n");
                 fprintf(fh,"RconObj -> Identifier\n");
@@ -2258,7 +2259,7 @@ yyreduce:
 
   case 75:
 /* Line 1792 of yacc.c  */
-#line 497 "./src/SyntaxPl0.y"
+#line 498 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"WriteS -> write SL_PAREN Wcontent SR_PAREN\n");
                 fprintf(fh,"WriteS -> write SL_PAREN Wcontent SR_PAREN\n");
@@ -2268,7 +2269,7 @@ yyreduce:
 
   case 76:
 /* Line 1792 of yacc.c  */
-#line 503 "./src/SyntaxPl0.y"
+#line 504 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Wcontent -> Wcontent COMMA WconObj\n"); 
                 fprintf(fh,"Wcontent -> Wcontent COMMA WconObj\n");
@@ -2278,7 +2279,7 @@ yyreduce:
 
   case 77:
 /* Line 1792 of yacc.c  */
-#line 508 "./src/SyntaxPl0.y"
+#line 509 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"Wcontent -> WconObj\n"); 
                 fprintf(fh,"Wcontent -> WconObj\n");
@@ -2288,7 +2289,7 @@ yyreduce:
 
   case 78:
 /* Line 1792 of yacc.c  */
-#line 514 "./src/SyntaxPl0.y"
+#line 515 "./src/SyntaxPl0.y"
     {
                 fprintf(fi,"WconObj -> Expr\n");
                 fprintf(fh,"WconObj -> Expr\n");
@@ -2298,7 +2299,7 @@ yyreduce:
 
 
 /* Line 1792 of yacc.c  */
-#line 2302 "SyntaxPl0.tab.c"
+#line 2303 "SyntaxPl0.tab.c"
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -2530,7 +2531,7 @@ yyreturn:
 
 
 /* Line 2055 of yacc.c  */
-#line 521 "./src/SyntaxPl0.y"
+#line 522 "./src/SyntaxPl0.y"
 
 
 int main(int argc, char** argv)
@@ -2540,6 +2541,9 @@ int main(int argc, char** argv)
     fh = fopen("./output/helperOutput.txt", "w+");
     yyparse();
     printTree(Root,0);
+    initHashtable();
+    program(Root);
+    printSymbol();
     return 0;
 }
 

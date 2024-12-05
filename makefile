@@ -1,7 +1,7 @@
 run:
 	./flex ./src/LexicalPl0.l
 	./bison -d -v ./src/SyntaxPl0.y
-	g++ -o code SyntaxPl0.tab.c lex.yy.c ./src/tree.cpp
+	g++ -o code SyntaxPl0.tab.c lex.yy.c ./src/tree.cpp ./src/semer.cpp
 	code < ./test/code.pl0
 clean:
 	del code.exe

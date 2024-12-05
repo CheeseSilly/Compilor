@@ -6,6 +6,7 @@ ALL RIGHTS DESERVED
  */
 
 #include"./head/main.h"
+#include"./head/semer.h"
 
 FILE *fi;
 FILE *fh;
@@ -527,6 +528,9 @@ int main(int argc, char** argv)
     fh = fopen("./output/helperOutput.txt", "w+");
     yyparse();
     printTree(Root,0);
+    initHashtable();
+    program(Root);
+    printSymbol();
     return 0;
 }
 

@@ -3,9 +3,9 @@
 FieldList hashTable[HASH_SIZE]; // hash ,which stores "variables"
 int scope_id = 0;               // id for new scope
 int current_id = 0;
-scope scopeTable[20];
+scope scopeTable[50];
 
-unsigned int hash_pjw(char *name) {
+unsigned int hash_pjw(const char *name) {
   unsigned int val = 0, i;
   for (; *name; ++name) {
     val = (val << 2) + *name;
@@ -74,7 +74,7 @@ int insert(FieldList f) {
         return 1;
       }
       // if hash has this function
-      if (strcmp(hashTable[key]->name, f->name) == 0) {
+      if (!strcmp(hashTable[key]->name, f->name)) {
         if (f->type->u.function.state == DEFIN) {
           hashTable[key] = f;
           return 1;
@@ -86,8 +86,9 @@ int insert(FieldList f) {
   return 0;
 }
 
-FieldList search(char *name,
-                 int flag // flag=1:function flag=0:variable
+FieldList
+search(const char *name,
+       int flag // flag=1:function flag=0:variable   their names can be the same
 ) {
   if (name == nullptr) {
     return nullptr;
@@ -101,7 +102,6 @@ FieldList search(char *name,
       // from inside to outside
       for (int i = sc.oNum - 1; i >= 0; i--) {
         if (p->scope_id == sc.o[i]) {
-          // todo:array
           return p;
         }
       }
@@ -112,7 +112,7 @@ FieldList search(char *name,
   return nullptr;
 }
 
-FieldList ifexist(char *name, int id) {
+FieldList ifexist(const char *name, int id) {
   if (name == nullptr) {
     return nullptr;
   }
@@ -129,4 +129,750 @@ FieldList ifexist(char *name, int id) {
     p = hashTable[key];
   }
   return nullptr;
+}
+
+void printSymbol() {
+  printf("***************\n");
+  for (int i = 0; i < HASH_SIZE; i++) {
+    if (hashTable[i] != NULL)
+      printf("%d %s\n", hashTable[i]->type->kind, hashTable[i]->name);
+  }
+  printf("***************\n");
+}
+
+// int TypeEqual(Type t1, Type t2) {
+//   if ((t1 == nullptr) || (t2 == nullptr))
+//     return 0;
+//   if (t1->kind != t2->kind)
+//     return 0;
+//   if (t1->kind == Type_::BASIC) {
+//     return (t1->u.basic == t2->u.basic);
+//   }
+//   if (t1->kind == Type_::ARRAY) {
+//     return (TypeEqual(t1->u.array.elem, t2->u.array.elem));
+//   }
+//   if (t1->kind == Type_::FUNCTION) {
+
+//     // Num and type check
+//     if (t1->u.function.paramNum != t2->u.function.paramNum)
+//       return 0;
+//     if (TypeEqual(t1->u.function.funcType, t2->u.function.funcType) == 0)
+//       return 0;
+//     FieldList p1 = t1->u.function.params;
+//     FieldList p2 = t2->u.function.params;
+//     for (int i = 0; i < t1->u.function.paramNum; i++) {
+//       if (TypeEqual(p1->type, p2->type) == 0)
+//         return 0;
+//       p1 = p1->tail;
+//       p2 = p2->tail;
+//     }
+//     return 1;
+//   }
+//   // printf("debug\n");
+//   return 0;
+// }
+
+// Program     : SubPro DOT
+void program(Node *root) {
+  if (root == nullptr) {
+    return;
+  }
+  // Program -> SubPro DOT
+  if (!strcmp(root->child[0]->name, "SubPro") &&
+      !strcmp(root->child[1]->name, "DOT")) {
+    SubPro(root->child[0]);
+  }
+}
+
+// SubPro      : DeclarePart Statements
+//             | Statements
+void SubPro(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  // SubPro -> DeclarePart Statements
+  if (!strcmp(node->child[0]->name, "DeclarePart") &&
+      !strcmp(node->child[1]->name, "Statements")) {
+    std::cout << node->child[0]->childNum << std::endl;
+    std::cout << node->child[0]->child[0]->name << std::endl;
+    DeclarePart(node->child[0]);
+    printf("debugSubPro\n");
+    Statements(node->child[1]);
+  }
+  // SubPro -> Statements
+  else if (!strcmp(node->child[0]->name, "Statements")) {
+    Statements(node->child[0]);
+  }
+}
+
+// DeclarePart : ConstDec
+//            |ConstDec VarDec
+//            |ConstDec ProDec
+//            |ConstDec VarDec ProDec
+//            |VarDec ProDec
+//            |VarDec
+//            |ProDec
+void DeclarePart(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+
+  // DeclarePart -> ConstDec
+  if (!strcmp(node->child[0]->name, "ConstDec") && node->childNum == 1) {
+    ConstDec(node->child[0]);
+  }
+
+  // DeclarePart -> ConstDec VarDec
+  if (!strcmp(node->child[0]->name, "ConstDec") &&
+      !strcmp(node->child[1]->name, "VarDec") && node->childNum == 2) {
+    ConstDec(node->child[0]);
+    VarDec(node->child[1]);
+  }
+
+  // DeclarePart -> ConstDec ProDec
+  if (!strcmp(node->child[0]->name, "ConstDec") &&
+      !strcmp(node->child[1]->name, "ProDec") && node->childNum == 2) {
+    ConstDec(node->child[0]);
+    ProDec(node->child[1]);
+  }
+
+  // DeclarePart -> ConstDec VarDec ProDec
+  if (!strcmp(node->child[0]->name, "ConstDec") &&
+      !strcmp(node->child[1]->name, "VarDec") &&
+      !strcmp(node->child[2]->name, "ProDec")) {
+    ConstDec(node->child[0]);
+    VarDec(node->child[1]);
+    ProDec(node->child[2]);
+  }
+
+  // DeclarePart -> VarDec
+  if (!strcmp(node->child[0]->name, "VarDec") && node->childNum == 1) {
+    VarDec(node->child[0]);
+  }
+  printf("debugDeclarePart\n");
+
+  // DeclarePart -> VarDec ProDec
+  if (!strcmp(node->child[0]->name, "VarDec") &&
+      !strcmp(node->child[1]->name, "ProDec") && node->childNum == 2) {
+    VarDec(node->child[0]);
+    ProDec(node->child[1]);
+  }
+
+  // DeclarePart -> ProDec
+  if (!strcmp(node->child[0]->name, "ProDec")) {
+    ProDec(node->child[0]);
+  }
+}
+
+// ConstDec    : ConstDec CONST ConstDef SEMI
+//             | CONST ConstDef SEMI
+void ConstDec(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  // ConstDec -> ConstDec CONST ConstDef SEMI
+  if (!strcmp(node->child[0]->name, "ConstDec") &&
+      !strcmp(node->child[1]->name, "CONST") &&
+      !strcmp(node->child[2]->name, "ConstDef") &&
+      !strcmp(node->child[3]->name, "SEMI")) {
+    ConstDec(node->child[0]);
+    ConstDef(node->child[2]);
+  }
+  // ConstDec -> CONST ConstDef SEMI
+  if (!strcmp(node->child[0]->name, "CONST") &&
+      !strcmp(node->child[1]->name, "ConstDef") &&
+      !strcmp(node->child[2]->name, "SEMI")) {
+    ConstDef(node->child[1]);
+  }
+}
+
+// ConstDef    : ConstDef COMMA CDefine
+//             | CDefine
+void ConstDef(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  // ConstDef -> ConstDef COMMA CDefine
+  if (!strcmp(node->child[0]->name, "ConstDef") &&
+      !strcmp(node->child[1]->name, "COMMA") &&
+      !strcmp(node->child[2]->name, "CDefine")) {
+    ConstDef(node->child[0]);
+    CDefine(node->child[2]);
+  }
+  // ConstDef -> CDefine
+  if (!strcmp(node->child[0]->name, "CDefine")) {
+    CDefine(node->child[0]);
+  }
+}
+
+// CDefine     : IDENTIFIER EQUAL INTEGER_VAL
+void CDefine(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  // CDefine -> IDENTIFIER EQUAL INTEGER_VAL
+  if (!strcmp(node->child[0]->name, "IDENTIFIER") &&
+      !strcmp(node->child[1]->name, "EQUAL") &&
+      !strcmp(node->child[2]->name, "INTEGER_VAL")) {
+    FieldList f = (FieldList)malloc(sizeof(FieldList_));
+    f->name = node->child[0]->yytext;
+    f->type = (Type)malloc(sizeof(Type_));
+    f->type->kind = Type_::BASIC;
+    f->type->u.basic = INT_TYPE;
+    f->is_const = true;
+    f->value = atoi(node->child[2]->yytext);
+    f->scope_id = current_id;
+    f->tail = nullptr;
+
+    // check
+    if (ifexist(f->name, f->scope_id) != nullptr) {
+      printf("Error at Line %d: Redefined variable %s.\n",
+             node->child[0]->lineRow, f->name);
+      printf("debugCDefine\n");
+    } else {
+      printf("debugInsert\n");
+      insert(f);
+    }
+  }
+}
+
+// VarDec      : VarDec VarObj
+//             | VarObj
+void VarDec(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "VarDec") &&
+      !strcmp(node->child[1]->name, "VarObj")) {
+    VarDec(node->child[0]);
+    VarObj(node->child[1]);
+  } else if (!strcmp(node->child[0]->name, "VarObj")) {
+    VarObj(node->child[0]);
+  }
+}
+
+// VarObj      :VAR IdentiDef SEMI
+void VarObj(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "VAR") &&
+      !strcmp(node->child[1]->name, "IdentiDef") &&
+      !strcmp(node->child[2]->name, "SEMI")) {
+    IdentiDef(node->child[1]);
+  }
+}
+
+// IdentiDef   : IdentiDef COMMA IdentiObject
+//             | IdentiObject
+void IdentiDef(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "IdentiDef") &&
+      !strcmp(node->child[1]->name, "COMMA") &&
+      !strcmp(node->child[2]->name, "IdentiObject")) {
+    IdentiDef(node->child[0]);
+    IdentiObject(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "IdentiObject")) {
+    IdentiObject(node->child[0]);
+  }
+}
+
+// IdentiObject : IDENTIFIER
+//              | IDENTIFIER Array(: SL_PAREN ArrayIndex COLON ArrayIndex
+//              SR_PAREN )
+void IdentiObject(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "IDENTIFIER") && node->childNum == 1) {
+    FieldList f = (FieldList)malloc(sizeof(FieldList_));
+    f->name = node->child[0]->yytext;
+    f->type = (Type)malloc(sizeof(Type_));
+    f->type->kind = Type_::BASIC;
+    f->type->u.basic = INT_TYPE;
+    f->is_const = false;
+    f->value = atoi(node->child[0]->yytext);
+    f->scope_id = current_id;
+    f->tail = nullptr;
+
+    // check
+    if (ifexist(f->name, f->scope_id) != nullptr)
+      printf("Error at Line %d: Redefined variable %s.\n", node->lineRow,
+             f->name);
+    else {
+      insert(f);
+      printf("debugIdentiObject\n");
+    }
+  } else if (!strcmp(node->child[0]->name, "IDENTIFIER") &&
+             !strcmp(node->child[1]->name, "Array")) {
+
+    Array(node->child[0], node->child[1]);
+  }
+}
+
+// Array       : SL_PAREN ArrayIndex COLON ArrayIndex SR_PAREN
+void Array(Node *id, Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "SL_PAREN") &&
+      !strcmp(node->child[1]->name, "ArrayIndex") &&
+      !strcmp(node->child[2]->name, "COLON") &&
+      !strcmp(node->child[3]->name, "ArrayIndex") &&
+      !strcmp(node->child[4]->name, "SR_PAREN")) {
+    ArrayIndex(id, node->child[1], node->child[3]);
+  }
+}
+
+// ArrayIndex  : INTEGER_VAL
+//             | IDENTIFIER
+void ArrayIndex(Node *id, Node *node1, Node *node2) {
+  if (node1 == nullptr || node2 == nullptr) {
+    return;
+  }
+  int i = 0, j = 0;
+  if (!strcmp(node1->child[0]->name, "INTEGER_VAL")) {
+    i = atoi(node1->child[0]->yytext);
+  } else {
+    if (ifexist(node1->child[0]->yytext, current_id) == nullptr) {
+      printf("Error at Line %d: Undefined variable %s.\n", node1->lineRow,
+             node1->child[0]->yytext);
+    } else {
+      i = ifexist(node1->child[0]->yytext, current_id)->value;
+    }
+  }
+  if (!strcmp(node2->child[0]->name, "INTEGER_VAL")) {
+    j = atoi(node2->child[0]->yytext);
+  } else {
+    if (ifexist(node2->child[0]->yytext, current_id) == nullptr) {
+      printf("Error at Line %d: Undefined variable %s.\n", node2->lineRow,
+             node2->child[0]->yytext);
+    } else {
+      j = ifexist(node2->child[0]->yytext, current_id)->value;
+    }
+  }
+  int size = j - i + 1;
+  if (size <= 0) {
+    printf("Error at Line %d: Array size is less than 0.\n", node1->lineRow);
+    return;
+  }
+  FieldList f = (FieldList)malloc(sizeof(FieldList_));
+  f->name = id->yytext;
+  f->type = (Type)malloc(sizeof(Type_));
+  f->type->kind = Type_::ARRAY;
+  f->type->u.array.size = size;
+  if (ifexist(f->name, f->scope_id) != nullptr)
+    printf("Error at Line %d: Redefined Array %s.\n", node1->lineRow, f->name);
+  else {
+    insert(f);
+    printf("debugArray\n");
+  }
+}
+
+// ProDec      : ProceHead SubPro SEMI
+//             | ProDec ProceHead SubPro SEMI
+void ProDec(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "ProDec") &&
+      !strcmp(node->child[1]->name, "ProceHead") &&
+      !strcmp(node->child[2]->name, "SubPro") &&
+      !strcmp(node->child[3]->name, "SEMI")) {
+    ProDec(node->child[0]);
+    ProceHead(node->child[1]);
+    scope_enter();
+    SubPro(node->child[2]);
+    scope_exit();
+  } else if (!strcmp(node->child[0]->name, "ProceHead") &&
+             !strcmp(node->child[1]->name, "SubPro") &&
+             !strcmp(node->child[2]->name, "SEMI")) {
+    ProceHead(node->child[0]);
+    scope_enter();
+    SubPro(node->child[1]);
+    scope_exit();
+  }
+}
+
+// ProceHead   : PROCEDURE IDENTIFIER SEMI
+void ProceHead(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "PROCEDURE") &&
+      !strcmp(node->child[1]->name, "IDENTIFIER") &&
+      !strcmp(node->child[2]->name, "SEMI")) {
+    FieldList f = (FieldList)malloc(sizeof(FieldList_));
+    f->name = node->child[1]->yytext;
+    f->type = (Type)malloc(sizeof(Type_));
+    f->type->kind = Type_::FUNCTION;
+    f->type->u.function.state = DEFIN;
+    f->scope_id = current_id;
+    f->tail = nullptr;
+
+    // check
+    if (ifexist(f->name, f->scope_id) != nullptr)
+      printf("Error at Line %d: Redefined Function %s.\n", node->lineRow,
+             f->name);
+    else {
+      insert(f);
+      printf("debugProceHead\n");
+    }
+  }
+}
+
+// Statements  : AssignStm
+//             | ComplexStm
+//             | CondiStm
+//             | WhileStm
+//             | CallS
+//             | ReadS
+//             | WriteS
+void Statements(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "AssignStm")) {
+    AssignStm(node->child[0]);
+  } else if (!strcmp(node->child[0]->name, "ComplexStm")) {
+    ComplexStm(node->child[0]);
+  } else if (!strcmp(node->child[0]->name, "CondiStm")) {
+    CondiStm(node->child[0]);
+  } else if (!strcmp(node->child[0]->name, "WhileStm")) {
+    WhileStm(node->child[0]);
+  } else if (!strcmp(node->child[0]->name, "CallS")) {
+    CallS(node->child[0]);
+  } else if (!strcmp(node->child[0]->name, "ReadS")) {
+    ReadS(node->child[0]);
+  } else if (!strcmp(node->child[0]->name, "WriteS")) {
+    WriteS(node->child[0]);
+  }
+}
+
+// Identifier  : IDENTIFIER SL_PAREN INdex_Index SR_PAREN
+//              | IDENTIFIER
+void Identifier(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "IDENTIFIER")) {
+    if (search(node->child[0]->yytext, 0) == nullptr) {
+      printf("Error at Line %d: Undefined variable %s.\n", node->lineRow,
+             node->child[0]->yytext);
+    } else {
+      FieldList f = search(node->child[0]->yytext, 0);
+      if (f->type->kind == Type_::ARRAY) {
+        printf("Error at Line %d: %s is an array.\n", node->lineRow,
+               node->child[0]->yytext);
+        return;
+      }
+      insert(f);
+    }
+  } else if (!strcmp(node->child[0]->name, "IDENTIFIER") &&
+             !strcmp(node->child[1]->name, "SL_PAREN") &&
+             !strcmp(node->child[2]->name, "INdex_Index") &&
+             !strcmp(node->child[3]->name, "SR_PAREN")) {
+    if (search(node->child[0]->yytext, 0) == nullptr) {
+      printf("Error at Line %d: Undefined variable %s.\n", node->lineRow,
+             node->child[0]->yytext);
+    } else {
+      FieldList f = search(node->child[0]->yytext, 0);
+      if (f->type->kind != Type_::ARRAY) {
+        printf("Error at Line %d: %s is not an array.\n", node->lineRow,
+               node->child[0]->yytext);
+        return;
+      }
+      insert(f);
+      INdex_Index(node->child[2]);
+    }
+  }
+}
+
+// INdex_Index  : Expr
+void INdex_Index(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Expr")) {
+    Expr(node->child[0]);
+  }
+}
+
+// AssignStm   : Identifier ASSIGN Expr
+void AssignStm(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Identifier") &&
+      !strcmp(node->child[1]->name, "ASSIGN") &&
+      !strcmp(node->child[2]->name, "Expr")) {
+    Identifier(node->child[0]);
+    FieldList f = search(node->child[0]->child[0]->yytext, 0);
+    if (f->is_const) {
+      printf("Error at Line %d: %s is a const variable.\n", node->lineRow,
+             node->child[0]->child[0]->yytext);
+      return;
+    }
+    Expr(node->child[2]);
+  }
+}
+
+// ComplexStm    : _BEGIN_ ComStates END
+void ComplexStm(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "_BEGIN_") &&
+      !strcmp(node->child[1]->name, "ComStates") &&
+      !strcmp(node->child[2]->name, "END")) {
+    scope_enter();
+    ComStates(node->child[1]);
+    scope_exit();
+    printf("debugComplexStm\n");
+  }
+}
+
+// ComStates    : ComStates SEMI Statements
+//              | Statements SEMI
+void ComStates(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "ComStates") &&
+      !strcmp(node->child[1]->name, "SEMI") &&
+      !strcmp(node->child[2]->name, "Statements")) {
+    ComStates(node->child[0]);
+    Statements(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "Statements") &&
+             !strcmp(node->child[1]->name, "SEMI")) {
+    Statements(node->child[0]);
+  }
+}
+
+// Condition   : Expr CMP Expr
+//             | ODD Expr
+void Condition(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Expr") &&
+      !strcmp(node->child[1]->name, "CMP") &&
+      !strcmp(node->child[2]->name, "Expr")) {
+    Expr(node->child[0]);
+    Expr(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "ODD") &&
+             !strcmp(node->child[1]->name, "Expr")) {
+    Expr(node->child[1]);
+  }
+}
+
+// CondiStm    : IF Condition THEN Statements %prec LOWER_THAN_ELSE
+//             | IF Condition THEN Statements ELSE Statements
+void CondiStm(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "IF") &&
+      !strcmp(node->child[1]->name, "Condition") &&
+      !strcmp(node->child[2]->name, "THEN") &&
+      !strcmp(node->child[3]->name, "Statements")) {
+    Condition(node->child[1]);
+    Statements(node->child[3]);
+  } else if (!strcmp(node->child[0]->name, "IF") &&
+             !strcmp(node->child[1]->name, "Condition") &&
+             !strcmp(node->child[2]->name, "THEN") &&
+             !strcmp(node->child[3]->name, "Statements") &&
+             !strcmp(node->child[4]->name, "ELSE") &&
+             !strcmp(node->child[5]->name, "Statements")) {
+    Condition(node->child[1]);
+    Statements(node->child[3]);
+    Statements(node->child[5]);
+  }
+}
+
+// Expr        : Expr PLUS Term
+//             | Expr MINUS Term
+//             | PLUS Term
+//             | MINUS Term
+//             | Term
+void Expr(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Expr") &&
+      !strcmp(node->child[1]->name, "PLUS") &&
+      !strcmp(node->child[2]->name, "Term")) {
+    Expr(node->child[0]);
+    Term(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "Expr") &&
+             !strcmp(node->child[1]->name, "MINUS") &&
+             !strcmp(node->child[2]->name, "Term")) {
+    Expr(node->child[0]);
+    Term(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "PLUS") &&
+             !strcmp(node->child[1]->name, "Term")) {
+    Term(node->child[1]);
+  } else if (!strcmp(node->child[0]->name, "MINUS") &&
+             !strcmp(node->child[1]->name, "Term")) {
+    Term(node->child[1]);
+  } else if (!strcmp(node->child[0]->name, "Term")) {
+    Term(node->child[0]);
+  }
+}
+
+// Term        : Term TIMES Factor
+//             | Term DIVIDE Factor
+//             | Factor
+void Term(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Term") &&
+      !strcmp(node->child[1]->name, "TIMES") &&
+      !strcmp(node->child[2]->name, "Factor")) {
+    Term(node->child[0]);
+    Factor(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "Term") &&
+             !strcmp(node->child[1]->name, "DIVIDE") &&
+             !strcmp(node->child[2]->name, "Factor")) {
+    Term(node->child[0]);
+    Factor(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "Factor")) {
+    Factor(node->child[0]);
+  }
+}
+
+// Factor      : Identifier
+//             | INTEGER_VAL
+//             | SL_PAREN Expr SR_PAREN
+void Factor(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Identifier")) {
+    Identifier(node->child[0]);
+  } else if (!strcmp(node->child[0]->name, "INTEGER_VAL")) {
+    return;
+  } else if (!strcmp(node->child[0]->name, "SL_PAREN") &&
+             !strcmp(node->child[1]->name, "Expr") &&
+             !strcmp(node->child[2]->name, "SR_PAREN")) {
+    Expr(node->child[1]);
+  }
+}
+
+// WhileStm    : WHILE Condition DO Statements
+void WhileStm(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "WHILE") &&
+      !strcmp(node->child[1]->name, "Condition") &&
+      !strcmp(node->child[2]->name, "DO") &&
+      !strcmp(node->child[3]->name, "Statements")) {
+    Condition(node->child[1]);
+    Statements(node->child[3]);
+  }
+}
+
+// CallS       : CALL IDENTIFIER
+void CallS(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "CALL") &&
+      !strcmp(node->child[1]->name, "IDENTIFIER")) {
+    if (search(node->child[1]->yytext, 1) == nullptr) {
+      printf("Error at Line %d: Undefined function %s.\n", node->lineRow,
+             node->child[1]->yytext);
+    } else {
+      FieldList f = search(node->child[1]->yytext, 1);
+      if (f->type->kind != Type_::FUNCTION) {
+        printf("Error at Line %d: %s is not a function.\n", node->lineRow,
+               node->child[1]->yytext);
+        return;
+      }
+      f->type->u.function.state = DECLA;
+      insert(f);
+    }
+  }
+}
+
+// ReadS       : READ SL_PAREN Rcontent SR_PAREN
+void ReadS(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "READ") &&
+      !strcmp(node->child[1]->name, "SL_PAREN") &&
+      !strcmp(node->child[2]->name, "Rcontent") &&
+      !strcmp(node->child[3]->name, "SR_PAREN")) {
+    Rcontent(node->child[2]);
+  }
+}
+
+// Rcontent     : Rcontent COMMA RconObj
+//              | RconObj
+void Rcontent(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Rcontent") &&
+      !strcmp(node->child[1]->name, "COMMA") &&
+      !strcmp(node->child[2]->name, "RconObj")) {
+    Rcontent(node->child[0]);
+    RconObj(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "RconObj")) {
+    RconObj(node->child[0]);
+  }
+}
+
+// RconObj     : Identifier
+void RconObj(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Identifier")) {
+    Identifier(node->child[0]);
+  }
+}
+
+// WriteS      : WRITE SL_PAREN Wcontent SR_PAREN
+void WriteS(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "WRITE") &&
+      !strcmp(node->child[1]->name, "SL_PAREN") &&
+      !strcmp(node->child[2]->name, "Wcontent") &&
+      !strcmp(node->child[3]->name, "SR_PAREN")) {
+    Wcontent(node->child[2]);
+  }
+}
+
+// Wcontent     : Wcontent COMMA WconObj
+//              | WconObj
+void Wcontent(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Wcontent") &&
+      !strcmp(node->child[1]->name, "COMMA") &&
+      !strcmp(node->child[2]->name, "WconObj")) {
+    Wcontent(node->child[0]);
+    WconObj(node->child[2]);
+  } else if (!strcmp(node->child[0]->name, "WconObj")) {
+    WconObj(node->child[0]);
+  }
+}
+
+// WconObj     : Expr
+void WconObj(Node *node) {
+  if (node == nullptr) {
+    return;
+  }
+  if (!strcmp(node->child[0]->name, "Expr")) {
+    Expr(node->child[0]);
+  }
 }

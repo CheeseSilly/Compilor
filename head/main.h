@@ -28,6 +28,8 @@ using Node = struct Node;
 
 Node *createNode(const char *name, const char *text);
 
+// Variadic function
+// std::initializer_list is failed,so i change that to use ...
 void addNode(int childsum, Node *parent, ...);
 
 void printTree(Node *root, int number);
