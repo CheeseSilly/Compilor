@@ -17,8 +17,8 @@ head
 IDENTIFIER -> head
 (
 SL_PAREN -> (
-1
-INTEGER_VAL -> 1
+11
+INTEGER_VAL -> 11
 ArrayIndex -> INTEGER_VAL
 :
 COLON -> :
@@ -523,4 +523,63 @@ Condition -> Expr CMP Expr
 write
 WRITE -> write
 (
-SL
+SL_PAREN -> (
+0
+INTEGER_VAL -> 0
+Factor -> INTEGER_VAL
+Term -> Factor
+,
+COMMA -> ,
+Expr -> Term
+WconObj -> Expr
+Wcontent -> WconObj
+0
+INTEGER_VAL -> 0
+Factor -> INTEGER_VAL
+Term -> Factor
+)
+SR_PAREN -> )
+Expr -> Term
+WconObj -> Expr
+Wcontent -> Wcontent COMMA WconObj
+WriteS -> write SL_PAREN Wcontent SR_PAREN
+Statements -> WriteS 
+else
+ELSE -> else
+write
+WRITE -> write
+(
+SL_PAREN -> (
+1
+INTEGER_VAL -> 1
+Factor -> INTEGER_VAL
+Term -> Factor
+,
+COMMA -> ,
+Expr -> Term
+WconObj -> Expr
+Wcontent -> WconObj
+0
+INTEGER_VAL -> 0
+Factor -> INTEGER_VAL
+Term -> Factor
+)
+SR_PAREN -> )
+Expr -> Term
+WconObj -> Expr
+Wcontent -> Wcontent COMMA WconObj
+WriteS -> write SL_PAREN Wcontent SR_PAREN
+Statements -> WriteS 
+CondiStm -> IF Condition THEN Statement ELSE Statement
+Statements -> CondiStm
+;
+SEMI -> ;
+ComStates ->ComStates  Statement SEMI
+end
+END -> end
+ComplexStm -> _BEGIN_ ComStates END
+Statements -> ComplexStm
+SubPro -> DeclarePart Statement
+.
+DOT -> .
+Program -> SubPro DOT

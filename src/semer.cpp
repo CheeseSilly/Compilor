@@ -75,7 +75,8 @@ int insert(FieldList f) {
       }
       // if hash has this function
       if (!strcmp(hashTable[key]->name, f->name)) {
-        if (f->type->u.function.state == DEFIN) {
+        if (f->type->u.function.state == DEFIN &&
+            hashTable[key]->type->u.function.state == DECLA) {
           hashTable[key] = f;
           return 1;
         }
@@ -192,15 +193,12 @@ void SubPro(Node *node) {
   }
   // SubPro -> DeclarePart Statements
   if (!strcmp(node->child[0]->name, "DeclarePart") &&
-      !strcmp(node->child[1]->name, "Statements")) {
-    std::cout << node->child[0]->childNum << std::endl;
-    std::cout << node->child[0]->child[0]->name << std::endl;
+      !strcmp(node->child[1]->name, "Statements") && node->childNum == 2) {
     DeclarePart(node->child[0]);
-    printf("debugSubPro\n");
     Statements(node->child[1]);
   }
   // SubPro -> Statements
-  else if (!strcmp(node->child[0]->name, "Statements")) {
+  else if (!strcmp(node->child[0]->name, "Statements") && node->childNum == 1) {
     Statements(node->child[0]);
   }
 }
@@ -239,27 +237,25 @@ void DeclarePart(Node *node) {
   // DeclarePart -> ConstDec VarDec ProDec
   if (!strcmp(node->child[0]->name, "ConstDec") &&
       !strcmp(node->child[1]->name, "VarDec") &&
-      !strcmp(node->child[2]->name, "ProDec")) {
+      !strcmp(node->child[2]->name, "ProDec") && node->childNum == 3) {
     ConstDec(node->child[0]);
     VarDec(node->child[1]);
     ProDec(node->child[2]);
   }
-
   // DeclarePart -> VarDec
   if (!strcmp(node->child[0]->name, "VarDec") && node->childNum == 1) {
     VarDec(node->child[0]);
   }
-  printf("debugDeclarePart\n");
 
   // DeclarePart -> VarDec ProDec
-  if (!strcmp(node->child[0]->name, "VarDec") &&
-      !strcmp(node->child[1]->name, "ProDec") && node->childNum == 2) {
+  if (node->childNum == 2 && node->child[0] != nullptr &&
+      node->child[1] != nullptr && !strcmp(node->child[0]->name, "VarDec") &&
+      !strcmp(node->child[1]->name, "ProDec")) {
     VarDec(node->child[0]);
     ProDec(node->child[1]);
   }
-
   // DeclarePart -> ProDec
-  if (!strcmp(node->child[0]->name, "ProDec")) {
+  if (!strcmp(node->child[0]->name, "ProDec") && node->childNum == 1) {
     ProDec(node->child[0]);
   }
 }
@@ -328,9 +324,7 @@ void CDefine(Node *node) {
     if (ifexist(f->name, f->scope_id) != nullptr) {
       printf("Error at Line %d: Redefined variable %s.\n",
              node->child[0]->lineRow, f->name);
-      printf("debugCDefine\n");
     } else {
-      printf("debugInsert\n");
       insert(f);
     }
   }
@@ -343,10 +337,10 @@ void VarDec(Node *node) {
     return;
   }
   if (!strcmp(node->child[0]->name, "VarDec") &&
-      !strcmp(node->child[1]->name, "VarObj")) {
+      !strcmp(node->child[1]->name, "VarObj") && node->childNum == 2) {
     VarDec(node->child[0]);
     VarObj(node->child[1]);
-  } else if (!strcmp(node->child[0]->name, "VarObj")) {
+  } else if (!strcmp(node->child[0]->name, "VarObj") && node->childNum == 1) {
     VarObj(node->child[0]);
   }
 }
@@ -403,7 +397,6 @@ void IdentiObject(Node *node) {
              f->name);
     else {
       insert(f);
-      printf("debugIdentiObject\n");
     }
   } else if (!strcmp(node->child[0]->name, "IDENTIFIER") &&
              !strcmp(node->child[1]->name, "Array")) {
@@ -462,12 +455,12 @@ void ArrayIndex(Node *id, Node *node1, Node *node2) {
   f->name = id->yytext;
   f->type = (Type)malloc(sizeof(Type_));
   f->type->kind = Type_::ARRAY;
+  f->is_const = false;
   f->type->u.array.size = size;
   if (ifexist(f->name, f->scope_id) != nullptr)
     printf("Error at Line %d: Redefined Array %s.\n", node1->lineRow, f->name);
   else {
     insert(f);
-    printf("debugArray\n");
   }
 }
 
@@ -518,7 +511,6 @@ void ProceHead(Node *node) {
              f->name);
     else {
       insert(f);
-      printf("debugProceHead\n");
     }
   }
 }
@@ -557,7 +549,7 @@ void Identifier(Node *node) {
   if (node == nullptr) {
     return;
   }
-  if (!strcmp(node->child[0]->name, "IDENTIFIER")) {
+  if (!strcmp(node->child[0]->name, "IDENTIFIER") && node->childNum == 1) {
     if (search(node->child[0]->yytext, 0) == nullptr) {
       printf("Error at Line %d: Undefined variable %s.\n", node->lineRow,
              node->child[0]->yytext);
@@ -573,7 +565,7 @@ void Identifier(Node *node) {
   } else if (!strcmp(node->child[0]->name, "IDENTIFIER") &&
              !strcmp(node->child[1]->name, "SL_PAREN") &&
              !strcmp(node->child[2]->name, "INdex_Index") &&
-             !strcmp(node->child[3]->name, "SR_PAREN")) {
+             !strcmp(node->child[3]->name, "SR_PAREN") && node->childNum == 4) {
     if (search(node->child[0]->yytext, 0) == nullptr) {
       printf("Error at Line %d: Undefined variable %s.\n", node->lineRow,
              node->child[0]->yytext);
@@ -607,10 +599,10 @@ void AssignStm(Node *node) {
   }
   if (!strcmp(node->child[0]->name, "Identifier") &&
       !strcmp(node->child[1]->name, "ASSIGN") &&
-      !strcmp(node->child[2]->name, "Expr")) {
+      !strcmp(node->child[2]->name, "Expr") && node->childNum == 3) {
     Identifier(node->child[0]);
     FieldList f = search(node->child[0]->child[0]->yytext, 0);
-    if (f->is_const) {
+    if (f->is_const == true) {
       printf("Error at Line %d: %s is a const variable.\n", node->lineRow,
              node->child[0]->child[0]->yytext);
       return;
@@ -630,7 +622,6 @@ void ComplexStm(Node *node) {
     scope_enter();
     ComStates(node->child[1]);
     scope_exit();
-    printf("debugComplexStm\n");
   }
 }
 
@@ -640,14 +631,22 @@ void ComStates(Node *node) {
   if (node == nullptr) {
     return;
   }
-  if (!strcmp(node->child[0]->name, "ComStates") &&
-      !strcmp(node->child[1]->name, "SEMI") &&
-      !strcmp(node->child[2]->name, "Statements")) {
-    ComStates(node->child[0]);
-    Statements(node->child[2]);
-  } else if (!strcmp(node->child[0]->name, "Statements") &&
-             !strcmp(node->child[1]->name, "SEMI")) {
+
+  // ComStates -> Statements SEMI
+  if (node->childNum == 2 && node->child[0] != nullptr &&
+      node->child[1] != nullptr &&
+      !strcmp(node->child[0]->name, "Statements") &&
+      !strcmp(node->child[1]->name, "SEMI")) {
     Statements(node->child[0]);
+  }
+  // ComStates -> ComStates  Statements SEMI
+  else if (node->childNum == 3 && node->child[0] != nullptr &&
+           node->child[1] != nullptr && node->child[2] != nullptr &&
+           !strcmp(node->child[0]->name, "ComStates") &&
+           !strcmp(node->child[1]->name, "Statements") &&
+           !strcmp(node->child[2]->name, "SEMI")) {
+    ComStates(node->child[0]);
+    Statements(node->child[1]);
   }
 }
 

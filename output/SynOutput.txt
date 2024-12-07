@@ -162,4 +162,102 @@ Term -> Factor
 Factor -> INTEGER_VAL
 Term -> Term TIMES Factor
 Expr -> Term
-Identifier 
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Factor -> INTEGER_VAL
+Term -> Term TIMES Factor
+Expr -> Expr PLUS Term
+CMP -> EQUAL
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+Condition -> Expr CMP Expr
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+WconObj -> Expr
+Wcontent -> WconObj
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+WconObj -> Expr
+Wcontent -> Wcontent COMMA WconObj
+WriteS -> write SL_PAREN Wcontent SR_PAREN
+Statements -> WriteS 
+ComStates -> Statement SEMI
+Identifier -> IDENTIFIER
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Expr PLUS Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+ComplexStm -> _BEGIN_ ComStates END
+Statements -> ComplexStm
+CondiStm -> IF Condition THEN Statement
+Statements -> CondiStm
+ComStates ->ComStates  Statement SEMI
+Identifier -> IDENTIFIER
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Expr PLUS Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+ComplexStm -> _BEGIN_ ComStates END
+Statements -> ComplexStm
+WhileStm -> WHILE Condition DO Statement
+Statements -> WhileStm 
+ComStates ->ComStates  Statement SEMI
+Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+CMP -> EQUAL
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+Condition -> Expr CMP Expr
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+WconObj -> Expr
+Wcontent -> WconObj
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+WconObj -> Expr
+Wcontent -> Wcontent COMMA WconObj
+WriteS -> write SL_PAREN Wcontent SR_PAREN
+Statements -> WriteS 
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+WconObj -> Expr
+Wcontent -> WconObj
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+WconObj -> Expr
+Wcontent -> Wcontent COMMA WconObj
+WriteS -> write SL_PAREN Wcontent SR_PAREN
+Statements -> WriteS 
+CondiStm -> IF Condition THEN Statement ELSE Statement
+Statements -> CondiStm
+ComStates ->ComStates  Statement SEMI
+ComplexStm -> _BEGIN_ ComStates END
+Statements -> ComplexStm
+SubPro -> DeclarePart Statement
+Program -> SubPro DOT
