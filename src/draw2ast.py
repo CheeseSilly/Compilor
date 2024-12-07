@@ -25,7 +25,7 @@ node_name_in_gv = 0
 def parse(line: str) -> List[str]:
     return line.split()
 
-# define syntax,parent&children,and do some work to deal with words
+# define syntax,parent&children,and do some work to deal with words to build tree
 def reduce(words: List[str]) -> None:
     global syntax
     parent = Node(words[0])
@@ -51,7 +51,7 @@ def read_file(file_name: str) -> None:
             else:
                 syntax.append(Node(line))
 
-# DFS for Node
+# DFS for Node Recursively
 def traversal(dot: Node) -> None:
     global node_name_in_gv
     if not dot:
@@ -74,7 +74,7 @@ def traversal(dot: Node) -> None:
     for child in dot.children:
         traversal(child)
 
-# DFS for edge
+# DFS for edge to connect the nodes
 def traversal_twice(dot: Node) -> None:
     if not dot:
         return

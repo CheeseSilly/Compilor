@@ -27,7 +27,7 @@ extern int yylex(void);
 %token<m_int> INTEGER_VAL
 %token<m_ID> IDENTIFIER
 %token PROCEDURE IF THEN ELSE WHILE DO READ WRITE CALL _BEGIN_ END CONST VAR ODD 
-%token SL_PAREN SR_PAREN LEFTBRAC RIGHTBRAC COMMA COLON SEMI DOT
+%token SL_PAREN SR_PAREN  COMMA COLON SEMI DOT
 %left PLUS MINUS
 %left TIMES DIVIDE
 %nonassoc ASSIGN
@@ -441,9 +441,8 @@ int main()
 {
     fi = fopen("./output/SynOutput.txt", "w+");
     fh = fopen("./output/helperOutput.txt", "w+");
-    if(!yyparse())
-        return 0;
-    return 1;
+    yyparse();
+    return 0;
 }
 
 void yyerror(char const* s)

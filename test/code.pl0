@@ -1,6 +1,6 @@
-{The Man Who Sold the }World}
+{The Man Who Sold the }}World}
 const z=0;
-var head(1:10), foot, cock, rabbit, n;
+var head(1: 10), foot, cock, rabbit, n;
 procedure multiply;
 	var a,b;
 	begin

@@ -155,7 +155,7 @@ illegal (\'.{2,}\')
 
 }
 
-"("|")"|"["|"]"|","|":"|";"|"."		{column+=yyleng;
+"("|")"|","|":"|";"|"."		{column+=yyleng;
 	fprintf(fh, "%s\n", yytext);
     if(!strcasecmp(yytext, "(")){
 		fprintf(fh, "SL_PAREN -> %s\n", yytext);
@@ -164,14 +164,6 @@ illegal (\'.{2,}\')
     if(!strcasecmp(yytext, ")")){
 		fprintf(fh, "SR_PAREN -> %s\n", yytext);
 		return SR_PAREN;
-	}
-    if(!strcasecmp(yytext, "[")){
-		fprintf(fh, "LEFTBRAC -> %s\n", yytext);
-		return LEFTBRAC;
-	}
-    if(!strcasecmp(yytext, "]")){
-		fprintf(fh, "RIGHTBRAC -> %s\n", yytext);
-		return RIGHTBRAC;
 	}
     if(!strcasecmp(yytext, ",")){
 		fprintf(fh, "COMMA -> %s\n", yytext);
