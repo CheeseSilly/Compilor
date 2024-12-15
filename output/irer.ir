@@ -1,0 +1,38 @@
+m := #7
+n := #3
+FUNCTION multiply : 
+a := x
+b := y
+temp4 := #0
+z := temp4
+LABEL label1 : 
+temp7 := #0
+IF b > temp7 GOTO label2
+GOTO label3
+LABEL label2 : 
+temp9 := b % #2
+IF temp9 == #1 GOTO label4
+GOTO label5
+LABEL label4 : 
+temp10 := z + a
+z := temp10
+LABEL label5 : 
+temp15 := #2
+temp13 := temp15 * a
+a := temp13
+temp20 := #2
+temp17 := b / temp20
+b := temp17
+GOTO label1
+LABEL label3 : 
+
+FUNCTION main : 
+temp22 := #3
+x := temp22
+temp24 := #7
+y := temp24
+temp26 := #0
+z := temp26
+zCALL multiply
+WRITE z
+
