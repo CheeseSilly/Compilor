@@ -1,5 +1,6 @@
 m := #7
 n := #85
+DEC arr 12 
 FUNCTION multiply : 
 a := x
 b := y

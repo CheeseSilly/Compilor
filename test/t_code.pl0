@@ -1,5 +1,5 @@
 const m=7, n=85;
-var x,y,z,q,r;
+var x,y,z,q,r,arr(1:3);
 procedure multiply;
 	var a,b;
 	begin
@@ -11,5 +11,5 @@ procedure multiply;
 			end;
 	end;
 begin
-	x:=m; y:=n; call multiply;
+	x:=m; y:=n; arr(1):=1; call multiply;
 end.

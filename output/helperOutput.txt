@@ -49,10 +49,29 @@ IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
 r
 IDENTIFIER -> r
-;
-SEMI -> ;
+,
+COMMA -> ,
 IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
+arr
+IDENTIFIER -> arr
+(
+SL_PAREN -> (
+1
+INTEGER_VAL -> 1
+ArrayIndex -> INTEGER_VAL
+:
+COLON -> :
+3
+INTEGER_VAL -> 3
+ArrayIndex -> INTEGER_VAL
+)
+SR_PAREN -> )
+Array -> SL_PAREN ArrayIndex COLON ArrayIndex SR_PAREN
+IdentiObject -> IDENTIFIER Array
+IdentiDef -> IdentiDef , IdentiObject
+;
+SEMI -> ;
 VarObj -> var IdentiDef SEMI
 VarDec -> VarObj
 procedure
@@ -245,59 +264,3 @@ end
 END -> end
 ComplexStm -> _BEGIN_ ComStates END
 Statements -> ComplexStm
-SubPro -> DeclarePart Statement
-;
-SEMI -> ;
-ProDec -> ProceHead SubPro SEMI
-begin
-_BEGIN_ -> begin
-DeclarePart -> ConstDec VarDec ProDec
-x
-IDENTIFIER -> x
-:=
-ASSIGN -> :=
-Identifier -> IDENTIFIER
-m
-IDENTIFIER -> m
-;
-SEMI -> ;
-Identifier -> IDENTIFIER
-Factor -> Identifier
-Term -> Factor
-Expr -> Term
-AssignStm -> Identifier ASSIGN Expr
-Statements -> AssignStm 
-ComStates -> Statement SEMI
-y
-IDENTIFIER -> y
-:=
-ASSIGN -> :=
-Identifier -> IDENTIFIER
-n
-IDENTIFIER -> n
-;
-SEMI -> ;
-Identifier -> IDENTIFIER
-Factor -> Identifier
-Term -> Factor
-Expr -> Term
-AssignStm -> Identifier ASSIGN Expr
-Statements -> AssignStm 
-ComStates ->ComStates  Statement SEMI
-call
-CALL -> call
-multiply
-IDENTIFIER -> multiply
-;
-SEMI -> ;
-CallS -> call SL_PAREN IDENTIFIER SR_PAREN
-Statements -> CallS 
-ComStates ->ComStates  Statement SEMI
-end
-END -> end
-ComplexStm -> _BEGIN_ ComStates END
-Statements -> ComplexStm
-SubPro -> DeclarePart Statement
-.
-DOT -> .
-Program -> SubPro DOT
