@@ -17,8 +17,8 @@ head
 IDENTIFIER -> head
 (
 SL_PAREN -> (
-11
-INTEGER_VAL -> 11
+9
+INTEGER_VAL -> 9
 ArrayIndex -> INTEGER_VAL
 :
 COLON -> :
@@ -58,6 +58,16 @@ IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
 VarObj -> var IdentiDef SEMI
 VarDec -> VarObj
+var
+VAR -> var
+a
+IDENTIFIER -> a
+;
+SEMI -> ;
+IdentiObject -> IDENTIFIER
+IdentiDef -> IdentiObject
+VarObj -> var IdentiDef SEMI
+VarDec -> VarDec VarObj
 procedure
 PROCEDURE -> procedure
 multiply
@@ -81,6 +91,16 @@ IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
 VarObj -> var IdentiDef SEMI
 VarDec -> VarObj
+var
+VAR -> var
+a
+IDENTIFIER -> a
+;
+SEMI -> ;
+IdentiObject -> IDENTIFIER
+IdentiDef -> IdentiObject
+VarObj -> var IdentiDef SEMI
+VarDec -> VarDec VarObj
 begin
 _BEGIN_ -> begin
 DeclarePart -> VarDec
@@ -304,6 +324,21 @@ ReadS -> read SL_PAREN Rcontent SR_PAREN
 Statements -> ReadS 
 ;
 SEMI -> ;
+ComStates ->ComStates  Statement SEMI
+multiply
+IDENTIFIER -> multiply
+:=
+ASSIGN -> :=
+Identifier -> IDENTIFIER
+3
+INTEGER_VAL -> 3
+Factor -> INTEGER_VAL
+Term -> Factor
+;
+SEMI -> ;
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
 ComStates ->ComStates  Statement SEMI
 cock
 IDENTIFIER -> cock

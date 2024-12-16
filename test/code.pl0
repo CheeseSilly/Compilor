@@ -1,8 +1,10 @@
 {The Man Who Sold the }World}
 const z=0;
-var head(11:10), foot, cock, rabbit, n;
+var head(9:10), foot, cock, rabbit, n;
+var a;
 procedure multiply;
 	var a,b;
+    var a;
 	begin
 		a:=x; b:=y; z:=0;
 		while b>0 do
@@ -15,6 +17,7 @@ begin
     n := z;
     read(head(z), foot)
 ;
+multiply:=3;
     cock := 1;
     while cock <= head do
     begin

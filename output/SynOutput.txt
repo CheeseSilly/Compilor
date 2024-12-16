@@ -16,6 +16,10 @@ IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
 VarObj -> var IdentiDef SEMI
 VarDec -> VarObj
+IdentiObject -> IDENTIFIER
+IdentiDef -> IdentiObject
+VarObj -> var IdentiDef SEMI
+VarDec -> VarDec VarObj
 ProceHead -> procedure IDENTIFIER SEMI
 IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiObject
@@ -23,6 +27,10 @@ IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
 VarObj -> var IdentiDef SEMI
 VarDec -> VarObj
+IdentiObject -> IDENTIFIER
+IdentiDef -> IdentiObject
+VarObj -> var IdentiDef SEMI
+VarDec -> VarDec VarObj
 DeclarePart -> VarDec
 Identifier -> IDENTIFIER
 Identifier -> IDENTIFIER
@@ -126,6 +134,13 @@ RconObj -> Identifier
 Rcontent -> Rcontent COMMA RconObj
 ReadS -> read SL_PAREN Rcontent SR_PAREN
 Statements -> ReadS 
+ComStates ->ComStates  Statement SEMI
+Identifier -> IDENTIFIER
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
 ComStates ->ComStates  Statement SEMI
 Identifier -> IDENTIFIER
 Factor -> INTEGER_VAL

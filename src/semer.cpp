@@ -135,8 +135,10 @@ FieldList ifexist(const char *name, int id) {
 void printSymbol() {
   printf("***************\n");
   for (int i = 0; i < HASH_SIZE; i++) {
-    if (hashTable[i] != NULL)
-      printf("%d %s\n", hashTable[i]->type->kind, hashTable[i]->name);
+    if (hashTable[i] != nullptr)
+      // printf("%d %s\n", hashTable[i]->type->kind, hashTable[i]->name);
+      printf("type:%d scope:%d name:%s \n", hashTable[i]->type->kind,
+             hashTable[i]->scope_id, hashTable[i]->name);
   }
   printf("***************\n");
 }
@@ -557,6 +559,11 @@ void Identifier(Node *node) {
       FieldList f = search(node->child[0]->yytext, 0);
       if (f->type->kind == Type_::ARRAY) {
         printf("Error at Line %d: %s is an array.\n", node->lineRow,
+               node->child[0]->yytext);
+        return;
+      }
+      if (f->type->kind == Type_::FUNCTION) {
+        printf("Error at Line %d: %s is a function.\n", node->lineRow,
                node->child[0]->yytext);
         return;
       }
