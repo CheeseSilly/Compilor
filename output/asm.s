@@ -124,6 +124,8 @@ main:
   addi $sp, $sp, -4
   addi $sp, $sp, -4
   addi $sp, $sp, -4
+  addi $sp, $sp, -4
+  addi $sp, $sp, -4
   addi $sp, $sp, -16
   sw $sp, -4($sp)
   addi $sp, $sp, -4
@@ -159,7 +161,14 @@ main:
   lw $s0, -20($gp)
   move $t7, $s0
   sw $t7, -24($gp)
-  lw $s1, -24($gp)
+  lw $s1, -28($gp)
+  li $s1, 2
+  sw $s1, -28($gp)
+  lw $s2, -8($gp)
+  lw $s3, -28($gp)
+  move $s2, $s3
+  sw $s2, -8($gp)
+  lw $s4, -24($gp)
   addi $sp, $sp, -72
   sw $t0, 0($sp)
   sw $t1, 4($sp)
@@ -188,65 +197,65 @@ main:
   lw $gp, 4($sp)
   addi $sp, $sp, 8
   addi $sp, $sp, 72
-  move $s1, $v0
-  sw $s1, -24($gp)
+  move $s4, $v0
+  sw $s4, -24($gp)
   addi $sp, $sp, -8
   sw $a0, 0($sp)
   sw $ra, 4($sp)
-  lw $s2, -24($gp)
-  move $a0, $s2
+  lw $s5, -24($gp)
+  move $a0, $s5
   jal write
   lw $a0, 0($sp)
   lw $ra, 4($sp)
   addi $sp, $sp, 8
-  lw $s3, -52($gp)
-  li $s3, 0
-  sw $s3, -52($gp)
-  lw $s4, -56($gp)
-  li $s5, 16
-  lw $s6, -52($gp)
-  mul $s4, $s6, $s5
-  sw $s4, -56($gp)
-  lw $s7, -60($gp)
-  lw $s7, -48($gp)
-  sw $s7, -60($gp)
-  lw $t8, -64($gp)
-  lw $t9, -56($gp)
-  lw $t0, -60($gp)
-  add $t8, $t0, $t9
-  sw $t8, -64($gp)
-  lw $t1, -68($gp)
-  li $t1, 2
-  sw $t1, -68($gp)
-  lw $t2, -48($gp)
+  lw $s6, -60($gp)
+  li $s6, 0
+  sw $s6, -60($gp)
+  lw $s7, -64($gp)
+  li $t8, 16
+  lw $t9, -60($gp)
+  mul $s7, $t9, $t8
+  sw $s7, -64($gp)
+  lw $t0, -68($gp)
+  lw $t0, -56($gp)
+  sw $t0, -68($gp)
+  lw $t1, -72($gp)
+  lw $t2, -64($gp)
   lw $t3, -68($gp)
-  move $t2, $t3
-  sw $t2, -48($gp)
+  add $t1, $t3, $t2
+  sw $t1, -72($gp)
   lw $t4, -76($gp)
-  li $t4, 0
+  li $t4, 2
   sw $t4, -76($gp)
-  lw $t5, -80($gp)
-  li $t6, 16
-  lw $t7, -76($gp)
-  mul $t5, $t7, $t6
-  sw $t5, -80($gp)
-  lw $s0, -84($gp)
-  lw $s0, -48($gp)
-  sw $s0, -84($gp)
-  lw $s1, -88($gp)
-  lw $s2, -80($gp)
-  lw $s3, -84($gp)
-  add $s1, $s3, $s2
-  sw $s1, -88($gp)
-  lw $s4, -92($gp)
-  lw $s5, -48($gp)
-  move $s4, $s5
-  sw $s4, -92($gp)
+  lw $t5, -56($gp)
+  lw $t6, -76($gp)
+  move $t5, $t6
+  sw $t5, -56($gp)
+  lw $t7, -84($gp)
+  li $t7, 0
+  sw $t7, -84($gp)
+  lw $s0, -88($gp)
+  li $s1, 16
+  lw $s2, -84($gp)
+  mul $s0, $s2, $s1
+  sw $s0, -88($gp)
+  lw $s3, -92($gp)
+  lw $s3, -56($gp)
+  sw $s3, -92($gp)
+  lw $s4, -96($gp)
+  lw $s5, -88($gp)
+  lw $s6, -92($gp)
+  add $s4, $s6, $s5
+  sw $s4, -96($gp)
+  lw $s7, -100($gp)
+  lw $t8, -56($gp)
+  move $s7, $t8
+  sw $s7, -100($gp)
   addi $sp, $sp, -8
   sw $a0, 0($sp)
   sw $ra, 4($sp)
-  lw $s6, -92($gp)
-  move $a0, $s6
+  lw $t9, -100($gp)
+  move $a0, $t9
   jal write
   lw $a0, 0($sp)
   lw $ra, 4($sp)

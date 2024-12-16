@@ -34,17 +34,19 @@ temp24 := #7
 y := temp24
 temp26 := #0
 z := temp26
+temp28 := #2
+x := temp28
 zCALL multiply
 WRITE z
 DEC arr 16 
-temp31 := #0
-temp30 := temp31 * #16
-temp32 := &arr + temp30
-temp34 := #2
-arr := temp34
-temp39 := #0
-temp38 := temp39 * #16
-temp40 := &arr + temp38
-temp41 := arr
-WRITE temp41
+temp33 := #0
+temp32 := temp33 * #16
+temp34 := &arr + temp32
+temp36 := #2
+arr := temp36
+temp41 := #0
+temp40 := temp41 * #16
+temp42 := &arr + temp40
+temp43 := arr
+WRITE temp43
 

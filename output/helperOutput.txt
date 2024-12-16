@@ -335,6 +335,21 @@ Expr -> Term
 AssignStm -> Identifier ASSIGN Expr
 Statements -> AssignStm 
 ComStates ->ComStates  Statement SEMI
+x
+IDENTIFIER -> x
+:=
+ASSIGN -> :=
+Identifier -> IDENTIFIER
+2
+INTEGER_VAL -> 2
+Factor -> INTEGER_VAL
+Term -> Factor
+;
+SEMI -> ;
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
 call
 CALL -> call
 multiply

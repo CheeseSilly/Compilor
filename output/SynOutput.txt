@@ -136,6 +136,13 @@ AssignStm -> Identifier ASSIGN Expr
 Statements -> AssignStm 
 ComStates ->ComStates  Statement SEMI
 Identifier -> IDENTIFIER
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+Identifier -> IDENTIFIER
 Factor -> Identifier
 Term -> Factor
 Expr -> Term
