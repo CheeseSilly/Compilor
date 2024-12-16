@@ -23,6 +23,29 @@ SEMI -> ;
 ConstDec -> const ConstDef SEMI
 var
 VAR -> var
+arr
+IDENTIFIER -> arr
+(
+SL_PAREN -> (
+1
+INTEGER_VAL -> 1
+ArrayIndex -> INTEGER_VAL
+:
+COLON -> :
+4
+INTEGER_VAL -> 4
+ArrayIndex -> INTEGER_VAL
+)
+SR_PAREN -> )
+Array -> SL_PAREN ArrayIndex COLON ArrayIndex SR_PAREN
+IdentiObject -> IDENTIFIER Array
+IdentiDef -> IdentiObject
+;
+SEMI -> ;
+VarObj -> var IdentiDef SEMI
+VarDec -> VarObj
+var
+VAR -> var
 x
 IDENTIFIER -> x
 ,
@@ -54,7 +77,7 @@ SEMI -> ;
 IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
 VarObj -> var IdentiDef SEMI
-VarDec -> VarObj
+VarDec -> VarDec VarObj
 procedure
 PROCEDURE -> procedure
 multiply
@@ -344,6 +367,60 @@ SR_PAREN -> )
 Identifier -> IDENTIFIER
 Factor -> Identifier
 Term -> Factor
+Expr -> Term
+WconObj -> Expr
+Wcontent -> WconObj
+WriteS -> write SL_PAREN Wcontent SR_PAREN
+Statements -> WriteS 
+;
+SEMI -> ;
+ComStates ->ComStates  Statement SEMI
+arr
+IDENTIFIER -> arr
+(
+SL_PAREN -> (
+0
+INTEGER_VAL -> 0
+Factor -> INTEGER_VAL
+Term -> Factor
+)
+SR_PAREN -> )
+Expr -> Term
+INdex_Index -> Expr
+Identifier -> IDENTIFIER SL_PAREN INdex_Index SR_PAREN
+:=
+ASSIGN -> :=
+2
+INTEGER_VAL -> 2
+Factor -> INTEGER_VAL
+Term -> Factor
+;
+SEMI -> ;
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+write
+WRITE -> write
+(
+SL_PAREN -> (
+arr
+IDENTIFIER -> arr
+(
+SL_PAREN -> (
+0
+INTEGER_VAL -> 0
+Factor -> INTEGER_VAL
+Term -> Factor
+)
+SR_PAREN -> )
+Expr -> Term
+INdex_Index -> Expr
+Identifier -> IDENTIFIER SL_PAREN INdex_Index SR_PAREN
+Factor -> Identifier
+Term -> Factor
+)
+SR_PAREN -> )
 Expr -> Term
 WconObj -> Expr
 Wcontent -> WconObj

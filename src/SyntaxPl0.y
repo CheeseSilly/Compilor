@@ -547,7 +547,7 @@ int main(int argc, char** argv)
     fi = fopen("./output/SynOutput.txt", "w+");
     fh = fopen("./output/helperOutput.txt", "w+");
     yyparse();
-    printTree(Root,0);
+    //printTree(Root,0);
     initHashtable();
     program(Root);
     printSymbol();

@@ -1,5 +1,6 @@
 m := #7
 n := #3
+DEC arr 16 
 FUNCTION multiply : 
 a := x
 b := y
@@ -35,4 +36,15 @@ temp26 := #0
 z := temp26
 zCALL multiply
 WRITE z
+DEC arr 16 
+temp31 := #0
+temp30 := temp31 * #16
+temp32 := &arr + temp30
+temp34 := #2
+arr := temp34
+temp39 := #0
+temp38 := temp39 * #16
+temp40 := &arr + temp38
+temp41 := arr
+WRITE temp41
 

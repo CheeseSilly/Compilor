@@ -136,7 +136,8 @@ void printSymbol() {
   printf("***************\n");
   for (int i = 0; i < HASH_SIZE; i++) {
     if (hashTable[i] != NULL)
-      printf("%d %s\n", hashTable[i]->type->kind, hashTable[i]->name);
+      printf("type:%d scope:%d name:%s \n", hashTable[i]->type->kind,
+             hashTable[i]->scope_id, hashTable[i]->name);
   }
   printf("***************\n");
 }
@@ -399,7 +400,7 @@ void IdentiObject(Node *node) {
       insert(f);
     }
   } else if (!strcmp(node->child[0]->name, "IDENTIFIER") &&
-             !strcmp(node->child[1]->name, "Array")) {
+             !strcmp(node->child[1]->name, "Array") && node->childNum == 2) {
 
     Array(node->child[0], node->child[1]);
   }
@@ -414,7 +415,7 @@ void Array(Node *id, Node *node) {
       !strcmp(node->child[1]->name, "ArrayIndex") &&
       !strcmp(node->child[2]->name, "COLON") &&
       !strcmp(node->child[3]->name, "ArrayIndex") &&
-      !strcmp(node->child[4]->name, "SR_PAREN")) {
+      !strcmp(node->child[4]->name, "SR_PAREN") && node->childNum == 5) {
     ArrayIndex(id, node->child[1], node->child[3]);
   }
 }
@@ -461,6 +462,9 @@ void ArrayIndex(Node *id, Node *node1, Node *node2) {
     printf("Error at Line %d: Redefined Array %s.\n", node1->lineRow, f->name);
   else {
     insert(f);
+    //   FieldList a = search(f->name, 0);
+    //   if (a != nullptr)
+    //   // printf("name:%s size:%d\n", a->name, a->type->u.array.size);
   }
 }
 
@@ -562,12 +566,13 @@ void Identifier(Node *node) {
       }
       insert(f);
     }
-  } else if (!strcmp(node->child[0]->name, "IDENTIFIER") &&
+  } else if (node->childNum == 4 &&
+             !strcmp(node->child[0]->name, "IDENTIFIER") &&
              !strcmp(node->child[1]->name, "SL_PAREN") &&
              !strcmp(node->child[2]->name, "INdex_Index") &&
-             !strcmp(node->child[3]->name, "SR_PAREN") && node->childNum == 4) {
+             !strcmp(node->child[3]->name, "SR_PAREN")) {
     if (search(node->child[0]->yytext, 0) == nullptr) {
-      printf("Error at Line %d: Undefined variable %s.\n", node->lineRow,
+      printf("Error at Line %d: Undefined variable(array) %s.\n", node->lineRow,
              node->child[0]->yytext);
     } else {
       FieldList f = search(node->child[0]->yytext, 0);
@@ -601,13 +606,17 @@ void AssignStm(Node *node) {
       !strcmp(node->child[1]->name, "ASSIGN") &&
       !strcmp(node->child[2]->name, "Expr") && node->childNum == 3) {
     Identifier(node->child[0]);
-    FieldList f = search(node->child[0]->child[0]->yytext, 0);
-    if (f->is_const == true) {
-      printf("Error at Line %d: %s is a const variable.\n", node->lineRow,
-             node->child[0]->child[0]->yytext);
-      return;
+    FieldList f;
+    // printf("%s\n", node->child[0]->child[0]->yytext);
+    f = search(node->child[0]->child[0]->yytext, 0);
+    if (f != nullptr) {
+      if (f->is_const == true) {
+        printf("Error at Line %d: %s is a const variable.\n", node->lineRow,
+               node->child[0]->child[0]->yytext);
+        return;
+      }
+      Expr(node->child[2]);
     }
-    Expr(node->child[2]);
   }
 }
 
@@ -753,7 +762,7 @@ void Factor(Node *node) {
   if (!strcmp(node->child[0]->name, "Identifier")) {
     Identifier(node->child[0]);
   } else if (!strcmp(node->child[0]->name, "INTEGER_VAL")) {
-    return;
+    // do nothing
   } else if (!strcmp(node->child[0]->name, "SL_PAREN") &&
              !strcmp(node->child[1]->name, "Expr") &&
              !strcmp(node->child[2]->name, "SR_PAREN")) {
@@ -780,6 +789,7 @@ void CallS(Node *node) {
   if (node == nullptr) {
     return;
   }
+  // printf("debug\n");
   if (!strcmp(node->child[0]->name, "CALL") &&
       !strcmp(node->child[1]->name, "IDENTIFIER") && node->childNum == 2) {
     if (search(node->child[1]->yytext, 1) == nullptr) {

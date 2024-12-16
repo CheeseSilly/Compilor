@@ -1,4 +1,5 @@
 const m=7, n=3;
+var arr(1:4);
 var x,y,z,q,r;
 procedure multiply;
 	var a,b;
@@ -13,9 +14,12 @@ procedure multiply;
 	end;
 procedure main;
 begin
-x:=3; y:=7;z:=0;
+x:=3; y:=7;
+z:=0;
 call multiply(z);
 write(z);
+arr(0):=2;
+write(arr(0));
 end;
 begin
 	return 0;

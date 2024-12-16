@@ -67,8 +67,7 @@ int transition(Operand op, int index, int opth) {
         IRList[index]->operands[2] = nullptr;
         insertIndexCode(index, code1);
         return 1;
-      } else if (IRList[index]->kind ==
-                 InterCode_::ASSIGN_IR) // *x = y 注意 *x = *y的可能
+      } else if (IRList[index]->kind == InterCode_::ASSIGN_IR) // *x = y *x = *y
       {
 
         if (IRList[index]->operands[1]->kind == Operand_::ADDR_OP) {
@@ -87,7 +86,7 @@ int transition(Operand op, int index, int opth) {
           IRList[index]->operands[1] = t1;
           IRList[index]->kind = InterCode_::ST_EQ_IR;
           insertIndexCode(index, code1);
-          return 1; // 新插入一个 index+1
+          return 1; // index+1
         } else {
           op->kind = Operand_::TEMPVAR_OP;
           IRList[index]->kind = InterCode_::ST_EQ_IR;
@@ -389,7 +388,12 @@ void transToAssem(FILE *fp, int index) {
     FieldList field = search(interCode->operands[0]->name, 1); // func
     int paramNum = 0;
 
-    for (int i = index + 1; i < IRsize; i++) // param
+    // for (int i = index + 1; i < IRsize; i++) // param
+    // {
+    //   addVarible(varListMem, (paramNum++) * 4 + 8, IRList[i]->operands[0]);
+    // }
+    for (int i = index + 1;
+         i < IRsize && IRList[i]->kind == InterCode_::PARAM_IR; i++) // 参数
     {
       addVarible(varListMem, (paramNum++) * 4 + 8, IRList[i]->operands[0]);
     }
@@ -423,6 +427,7 @@ void transToAssem(FILE *fp, int index) {
       if (op != nullptr) {
         if (temp->kind == InterCode_::DEC_IR) {
           offset -= temp->size + 4;
+          // printf("debugDEC");
           fprintf(fp, "  addi $sp, $sp, -%d\n", temp->size);
           fprintf(fp, "  sw $sp, -4($sp)\n");
           fprintf(fp, "  addi $sp, $sp, -4\n");
@@ -466,8 +471,21 @@ void transToAssem(FILE *fp, int index) {
       fprintf(fp, "  move %s, %s\n", regList[leftReg]->name,
               regList[saveToReg(fp, interCode->operands[1])]->name);
     }
-    addVarible(varListMem, leftReg, interCode->operands[0]);
-    saveToStack(fp, leftReg, interCode->operands[0]);
+    int flag = 0;
+    for (Varible *temp = varListMem->head; temp != nullptr; temp = temp->next) {
+      // printf("%s\n", temp->op->name);
+      if (strcmp(temp->op->name, interCode->operands[0]->name) == 0) {
+        flag = 1;
+        break;
+      }
+    }
+    if (flag == 1) {
+      saveToStack(fp, leftReg, interCode->operands[0]);
+    } else {
+      addVarible(varListMem, leftReg, interCode->operands[0]);
+      saveToStack(fp, leftReg, interCode->operands[0]);
+    }
+
   }
 
   else if (kind == InterCode_::PLUS_IR) {
@@ -582,7 +600,7 @@ void transToAssem(FILE *fp, int index) {
     // for (int i = index - 1; i < IRsize && paramNum < ParamNum; i--) {
     //   InterCode arg = IRList[i];
     //   if (arg->kind ==
-    //       InterCode_::ARG_IR) // 有没有&是一样的？ 但是有&就不是一个变量
+    //       InterCode_::ARG_IR) //
     //     fprintf(fp, "  sw %s, %d($sp)\n",
     //             regList[saveToReg(fp, arg->operands[0])]->name,
     //             4 * (paramNum++));
@@ -597,13 +615,13 @@ void transToAssem(FILE *fp, int index) {
     fprintf(fp, "  lw $gp, 4($sp)\n");
     fprintf(fp, "  addi $sp, $sp, 8\n");
     offset += 8;
-    for (int i = T0; i <= T9; ++i)
-      fprintf(fp, "  lw %s, %d($sp)\n", regList[i]->name, (i - T0) * 4);
+    // for (int i = T0; i <= T9; ++i)
+    //   fprintf(fp, "  lw %s, %d($sp)\n", regList[i]->name, (i - T0) * 4);
     fprintf(fp, "  addi $sp, $sp, 72\n");
     offset += 72;
     fprintf(fp, "  move %s, $v0\n", regList[leftReg]->name);
     // addVarible(varListReg, leftReg, interCode->operands[0]);
-    addVarible(varListMem, leftReg, interCode->operands[0]);
+    // addVarible(varListMem, leftReg, interCode->operands[0]);
     saveToStack(fp, leftReg, interCode->operands[0]);
   } else if (kind == InterCode_::PARAM_IR) {
   } else if (kind == InterCode_::DEC_IR) {

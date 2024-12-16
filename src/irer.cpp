@@ -74,7 +74,7 @@ void repr(Operand op, FILE *fp) {
     fputs(str, fp);
     break;
   case Operand_::ADDR_OP:
-    sprintf(str, "*temp%d", op->u.var_no);
+    sprintf(str, "*t%d", op->u.var_no);
     fputs(str, fp);
     break;
   case Operand_::QU_ADDR_OP:
@@ -232,6 +232,22 @@ void printCode(char *filename) {
     case InterCode_::DEBUG_IR:
       fputs("DEBUG", fp);
       fputs(ir->operands[0]->u.value, fp);
+      break;
+    case InterCode_::QU_IR:
+      repr(ir->operands[0], fp);
+      fputs(" := &", fp);
+      repr(ir->operands[1], fp);
+      break;
+    case InterCode_::EQ_ST_IR:
+      repr(ir->operands[0], fp);
+      fputs(" := *", fp);
+      repr(ir->operands[1], fp);
+      break;
+    case InterCode_::ST_EQ_IR:
+      fputs("*", fp);
+      repr(ir->operands[0], fp);
+      fputs(" := ", fp);
+      repr(ir->operands[1], fp);
       break;
     }
     fputs("\n", fp);
@@ -788,14 +804,26 @@ void rAssignStm(Node *node) {
   // Array
   if (f->type->kind == Type_::ARRAY) {
     // left
+    FieldList d = allsearch(node->child[0]->child[0]->yytext, 0);
+    Operand op = (Operand)malloc(sizeof(Operand_));
+    op->kind = Operand_::VARIABLE_OP;
+    strcpy(op->u.value, d->name);
+
+    InterCode decIR = (InterCode)malloc(sizeof(InterCode_));
+    decIR->kind = InterCode_::DEC_IR;
+    decIR->operands[0] = op;
+    decIR->size = getSpace(d->type);
+
+    insertCode(decIR);
+
     Operand left = (Operand)malloc(sizeof(Operand_));
     left->kind = Operand_::VARIABLE_OP;
     strcpy(left->u.value, f->name);
     Operand t1 = new_temp();
     Operand t2 = new_temp();
     Operand t3 = new_temp();
-    rExpr(node->child[0]->child[0], t1);
-    rExpr(node->child[0]->child[2], t2);
+    rFactor(node, t1);
+    rExpr(node->child[0]->child[2]->child[0], t2);
     FieldList f = allsearch(node->child[0]->child[0]->yytext, 0);
     int size = getSpace(f->type);
     InterCode code3 = (InterCode)malloc(sizeof(InterCode_));
@@ -810,8 +838,8 @@ void rAssignStm(Node *node) {
     code4->operands[0] = t4;
     code4->operands[1] = t1;
     code4->operands[2] = t3;
-    left->kind = Operand_::ADDR_OP;
-    left->u.var_no = t4->u.var_no;
+    // left->kind = Operand_::ADDR_OP;
+    // left->u.var_no = t4->u.var_no;
     insertCode(code4);
 
     // right
@@ -1124,6 +1152,8 @@ void rWcontent(Node *node) {
 }
 
 // WconObj     : Expr
+// if array:
+// Expr->Term->Factor->Identifier->IDENTIFIER L Index R
 void rWconObj(Node *node) {
   if (node == nullptr) {
     return;
@@ -1131,10 +1161,52 @@ void rWconObj(Node *node) {
   if (!strcmp(node->child[0]->name, "Expr")) {
     Operand t1 = new_temp();
     rExpr(node->child[0], t1);
-    InterCode ir = (InterCode)malloc(sizeof(InterCode_));
-    ir->kind = InterCode_::WRITE_IR;
-    ir->operands[0] = t1;
-    insertCode(ir);
+    if (t1->kind == Operand_::QU_ADDR_OP) {
+      Operand left = (Operand)malloc(sizeof(Operand_));
+      left->kind = Operand_::VARIABLE_OP;
+      strcpy(left->u.value, t1->u.value);
+      Operand t1 = new_temp();
+      Operand t2 = new_temp();
+      Operand t3 = new_temp();
+      rExpr(node->child[0], t1);
+      rExpr(node->child[0]->child[0]->child[0]->child[0]->child[2]->child[0],
+            t2);
+      FieldList f = allsearch(
+          node->child[0]->child[0]->child[0]->child[0]->child[0]->yytext, 0);
+      int size = getSpace(f->type);
+      InterCode code3 = (InterCode)malloc(sizeof(InterCode_));
+      code3->kind = InterCode_::STAR_IR;
+      code3->operands[0] = t3;
+      code3->operands[1] = t2;
+      code3->operands[2] = new_constant(size);
+      insertCode(code3);
+      Operand t4 = new_temp();
+      InterCode code4 = (InterCode)malloc(sizeof(InterCode_));
+      code4->kind = InterCode_::PLUS_IR;
+      code4->operands[0] = t4;
+      code4->operands[1] = t1;
+      code4->operands[2] = t3;
+      // left->kind = Operand_::ADDR_OP;
+      // left->u.var_no = t4->u.var_no;
+      insertCode(code4);
+
+      Operand t5 = new_temp();
+      InterCode code5 = (InterCode)malloc(sizeof(InterCode_));
+      code5->kind = InterCode_::ASSIGN_IR;
+      code5->operands[0] = t5;
+      code5->operands[1] = left;
+      insertCode(code5);
+
+      InterCode ir = (InterCode)malloc(sizeof(InterCode_));
+      ir->kind = InterCode_::WRITE_IR;
+      ir->operands[0] = t5;
+      insertCode(ir);
+    } else {
+      InterCode ir = (InterCode)malloc(sizeof(InterCode_));
+      ir->kind = InterCode_::WRITE_IR;
+      ir->operands[0] = t1;
+      insertCode(ir);
+    }
   }
 }
 

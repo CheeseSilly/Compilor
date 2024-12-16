@@ -3,6 +3,13 @@ ConstDef -> CDefine
 CDefine -> IDENTIFIER = INTEGER_VAL
 ConstDef -> ConstDef , CDefine
 ConstDec -> const ConstDef SEMI
+ArrayIndex -> INTEGER_VAL
+ArrayIndex -> INTEGER_VAL
+Array -> SL_PAREN ArrayIndex COLON ArrayIndex SR_PAREN
+IdentiObject -> IDENTIFIER Array
+IdentiDef -> IdentiObject
+VarObj -> var IdentiDef SEMI
+VarDec -> VarObj
 IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiObject
 IdentiObject -> IDENTIFIER
@@ -14,7 +21,7 @@ IdentiDef -> IdentiDef , IdentiObject
 IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiDef , IdentiObject
 VarObj -> var IdentiDef SEMI
-VarDec -> VarObj
+VarDec -> VarDec VarObj
 ProceHead -> procedure IDENTIFIER SEMI
 IdentiObject -> IDENTIFIER
 IdentiDef -> IdentiObject
@@ -138,6 +145,30 @@ CallS -> call SL_PAREN Ccontent SR_PAREN
 Statements -> CallS 
 ComStates ->ComStates  Statement SEMI
 Identifier -> IDENTIFIER
+Factor -> Identifier
+Term -> Factor
+Expr -> Term
+WconObj -> Expr
+Wcontent -> WconObj
+WriteS -> write SL_PAREN Wcontent SR_PAREN
+Statements -> WriteS 
+ComStates ->ComStates  Statement SEMI
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+INdex_Index -> Expr
+Identifier -> IDENTIFIER SL_PAREN INdex_Index SR_PAREN
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+AssignStm -> Identifier ASSIGN Expr
+Statements -> AssignStm 
+ComStates ->ComStates  Statement SEMI
+Factor -> INTEGER_VAL
+Term -> Factor
+Expr -> Term
+INdex_Index -> Expr
+Identifier -> IDENTIFIER SL_PAREN INdex_Index SR_PAREN
 Factor -> Identifier
 Term -> Factor
 Expr -> Term
